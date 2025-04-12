@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@keyframes floatUpLeft {
+	0% {
+		transform: translate(0, 0) scale(0.8);
+		opacity: 0;
+	}
+	10% {
+		transform: translate(-5px, -15px) scale(1);
+		opacity: 0.2;
+	}
+	100% {
+		transform: translate(-50px, -150px) scale(0.5);
+		opacity: 0;
+	}
+}
+
+@keyframes floatUpRight {
+	0% {
+		transform: translate(0, 0) scale(0.8);
+		opacity: 0;
+	}
+	10% {
+		transform: translate(5px, -15px) scale(1);
+		opacity: 0.2;
+	}
+	100% {
+		transform: translate(50px, -150px) scale(0.5);
+		opacity: 0;
+	}
+}
+
+@keyframes floatUpTopLeft {
+	0% {
+		transform: translate(0, 0) scale(0.8);
+		opacity: 0;
+	}
+	10% {
+		transform: translate(-5px, -20px) scale(1);
+		opacity: 0.2;
+	}
+	100% {
+		transform: translate(-50px, -200px) scale(0.5);
+		opacity: 0;
+	}
+}
+
+@keyframes floatUpTopRight {
+	0% {
+		transform: translate(0, 0) scale(0.8);
+		opacity: 0;
+	}
+	10% {
+		transform: translate(5px, -20px) scale(1);
+		opacity: 0.2;
+	}
+	100% {
+		transform: translate(50px, -200px) scale(0.5);
+		opacity: 0;
+	}
+}
+
+@keyframes floatUpStraightLeft {
+	0% {
+		transform: translate(0, 0) scale(0.8);
+		opacity: 0;
+	}
+	10% {
+		transform: translate(-5px, -15px) scale(1);
+		opacity: 0.2;
+	}
+	100% {
+		transform: translate(-100px, -150px) scale(0.5);
+		opacity: 0;
+	}
+}
+
+@keyframes floatUpStraightRight {
+	0% {
+		transform: translate(0, 0) scale(0.8);
+		opacity: 0;
+	}
+	10% {
+		transform: translate(5px, -15px) scale(1);
+		opacity: 0.2;
+	}
+	100% {
+		transform: translate(100px, -150px) scale(0.5);
+		opacity: 0;
+	}
+}
+
+@theme {
+	--color-dark: #000; /* or #070510 */
+	--color-light: #e5e7eb;
+
+	--animate-note-left: floatUpLeft 3s linear forwards;
+	--animate-note-right: floatUpRight 3s linear forwards;
+	--animate-note-top-left: floatUpTopLeft 3s linear forwards;
+	--animate-note-top-right: floatUpTopRight 3s linear forwards;
+	--animate-note-straight-left: floatUpStraightLeft 3s linear forwards;
+	--animate-note-straight-right: floatUpStraightRight 3s linear forwards;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+	--color-light: #e5e7eb;
+	--zoom-background: var(--color-light);
+	--border-spin-start-color: rgba(128, 128, 128, 0.3);
+	--border-spin-mid-color: rgba(192, 192, 192, 0.8);
+}
+
+html.dark {
+	--color-dark: #000; /* or #070510 */
+	--zoom-background: var(--color-dark);
+	--border-spin-start-color: rgba(160, 160, 160, 0.3);
+	--border-spin-mid-color: rgba(224, 224, 224, 0.8);
+}
+
+html {
+	@apply bg-gray-200 dark:bg-black text-gray-900 dark:text-gray-200 transition-colors duration-300;
+}
+
+html:not(.dark) .prose pre,
+html:not(.dark) pre {
+	@apply bg-[#edeff2] text-[#24292e];
+}
+
+.dark .prose pre,
+.dark pre {
+	@apply bg-[#090909] text-[#fff];
+}
+
+.page-enter-active,
+.page-leave-active {
+	transition: all 0.15s;
+}
+.page-enter-from,
+.page-leave-to {
+	opacity: 0;
+	filter: blur(1rem);
+}
+
+@layer utilities {
+	:root {
+		--border-spin-start-color: rgba(128, 128, 128, 0.3);
+		--border-spin-mid-color: rgba(192, 192, 192, 0.8);
+	}
+	html.dark {
+		--border-spin-start-color: rgba(160, 160, 160, 0.3);
+		--border-spin-mid-color: rgba(224, 224, 224, 0.8);
+	}
+
+	@keyframes spin-gradient {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	.keycap-overflow-border-container {
+		position: relative;
+		overflow: hidden;
+		z-index: 0;
+		@apply border border-transparent;
+	}
+
+	.keycap-spinning-gradient-bg {
+		content: "";
+		position: absolute;
+		inset: -5px;
+		z-index: -1;
+		border-radius: inherit;
+		background: conic-gradient(
+			from 180deg,
+			var(--border-spin-start-color),
+			var(--border-spin-mid-color),
+			var(--border-spin-start-color)
+		);
+		animation: spin-gradient 4s linear infinite;
+	}
+
+	.metallic {
+		@apply dark:text-transparent bg-clip-text dark:text-shadow-[0_0_10px_rgba(255,255,255,0.5)] dark:bg-[linear-gradient(45deg,#666_5%,#fff_15%,#aaa_30%,#eee_50%,#aaa_70%,#fff_85%,#666_95%)] dark:bg-clip-text;
+		-webkit-background-clip: text;
+	}
+
+	a {
+		@apply !no-underline;
+	}
+}
+
+::selection {
+	@apply bg-black/10;
+}
+
+.dark ::selection {
+	@apply bg-white/20;
+}
