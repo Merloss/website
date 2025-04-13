@@ -107,7 +107,6 @@ onMounted(async () => {
             to: post.path,
         }));
     } catch (error) {
-        console.error("Failed to fetch posts for command palette:", error);
         fetchedPostCommands.value = [];
     }
 });

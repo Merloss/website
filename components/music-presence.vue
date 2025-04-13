@@ -41,7 +41,6 @@ const fetchPresence = async () => {
         track.value = data;
         isPlaying.value = data.isPlaying;
     } catch (error) {
-        console.error("Error fetching track details:", error);
         track.value = null;
         isPlaying.value = false;
     } finally {
