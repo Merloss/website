@@ -10,7 +10,7 @@
         <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
             Sorry, the page you are looking for doesn't exist or has been moved.
         </p>
-        <NuxtLink to="/"
+        <NuxtLink to="/" aria-label="Go back home"
             class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
             <Icon name="material-symbols:arrow-back-rounded" class="mr-2" />
             Go Back Home

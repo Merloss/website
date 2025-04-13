@@ -3,10 +3,12 @@
         class="sticky top-4 z-50 rounded-xl border border-white/10 bg-white/60 dark:bg-black/50 backdrop-blur-lg shadow-lga px-6 py-3 mx-auto w-full">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-6">
-                <NuxtLink to="/" class="text-xl font-bold text-gray-900 dark:text-white">Kerim Kara</NuxtLink>
+                <NuxtLink to="/" aria-label="Go to home page" class="text-xl font-bold text-gray-900 dark:text-white">
+                    Kerim Kara
+                </NuxtLink>
                 <div class="text-sm text-gray-600 dark:text-gray-400 hidden sm:flex items-center space-x-2">
                     <template v-if="breadcrumbs.length > 0" v-for="(item, index) in breadcrumbs" :key="item.text">
-                        <NuxtLink v-if="item.to" :to="item.to"
+                        <NuxtLink v-if="item.to" :to="item.to" :aria-label="`Go to ${item.text} page`"
                             class="hover:text-gray-900 dark:hover:text-white transition-colors">
                             {{ item.text }}
                         </NuxtLink>

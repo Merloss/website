@@ -11,6 +11,7 @@
                 class="bg-white/50 dark:bg-black/30 p-6 rounded-lg shadow-md backdrop-blur-sm border border-white/10">
                 <h2 class="text-2xl font-semibold mb-2">{{ work.title }}</h2>
                 <NuxtLink :to="work.link" target="_blank" rel="noopener noreferrer"
+                    :aria-label="`Go to ${work.company} page`"
                     class="text-lg font-medium text-primary-600 dark:text-primary-400 mb-1 italic">
                     {{ work.company }}
                 </NuxtLink>

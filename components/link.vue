@@ -1,5 +1,6 @@
 <template>
-    <NuxtLink external :to="getUtmLink" :target="props.target" :rel="props.rel" :class="props.class">
+    <NuxtLink external :aria-label="ariaLabel" :to="getUtmLink" :target="props.target" :rel="props.rel"
+        :class="props.class">
         <slot />
     </NuxtLink>
 </template>
@@ -10,6 +11,7 @@ const props = defineProps<{
     target?: string;
     rel?: string;
     class?: string;
+    ariaLabel?: string;
 }>();
 
 const getUtmLink = computed(() => {

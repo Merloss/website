@@ -32,8 +32,8 @@
 					<div v-for="work in WORK" :key="work.company"
 						class="m-2 sm:px-8 border-2 border-dashed dark:border-white/10 border-black/10 p-4 rounded-md transition-all duration-300">
 						<div class="flex flex-col m-0">
-							<NuxtLink :to="work.link" target="_blank" rel="noopener noreferrer"
-								class="font-bold text-3xl">
+							<NuxtLink :to="work.link" :aria-label="`Go to ${work.company} page`" target="_blank"
+								rel="noopener noreferrer" class="font-bold text-3xl">
 								{{ work.company }}
 							</NuxtLink>
 							<div class=" flex flex-col ml-1.5 mt-1">
@@ -48,7 +48,8 @@
 				<section v-motion :initial="{ opacity: 0, y: 50 }"
 					:enter="{ opacity: 1, y: 0, transition: { delay: 600 } }">
 					<h2>Latest Blog Posts</h2>
-					<NuxtLink v-for="post in posts" :key="post.path" :to="post.path" class="size-0.5">
+					<NuxtLink v-for="post in posts" :key="post.path" :to="post.path"
+						:aria-label="`Go to ${post.title} post`" class="size-0.5">
 						<div
 							class="text-sm border border-dashed border-black/20 hover:border-black/30 dark:border-white/20 dark:hover:border-white/30 transition-all duration-300 p-3 rounded-md m-2 flex flex-col">
 							<h3 class="!m-0 flex justify-between">
@@ -69,6 +70,7 @@
 					<ul>
 						<li v-for="social in SOCIALS" :key="social.name">
 							<Link :href="social.url" target="_blank" rel="noopener noreferrer"
+								:aria-label="`Go to ${social.name} page`"
 								class="text-primary-600 dark:text-primary-400 hover:underline">
 							{{ social.name }}
 							</Link>

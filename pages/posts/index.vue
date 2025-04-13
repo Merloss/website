@@ -9,13 +9,13 @@
             <article v-for="(post, index) in posts" :key="post.path" v-motion :initial="{ opacity: 0, y: 50 }"
                 :enter="{ opacity: 1, y: 0, transition: { delay: 200 + index * 100 } }"
                 class="flex flex-col bg-white/50 dark:bg-black/30 rounded-lg shadow-md overflow-hidden backdrop-blur-sm border border-white/10">
-                <NuxtLink v-if="post.image" :to="post.path">
+                <NuxtLink v-if="post.image" :to="post.path" :aria-label="`Go to ${post.title} post`">
                     <Image :src="post.image" :alt="post.title || 'Post image'" class="w-full h-24 object-cover"
                         :width="600" :height="100" :blurhash="post.blurhash" disableZoom />
                 </NuxtLink>
 
                 <div class="p-6 flex flex-col flex-grow">
-                    <NuxtLink :to="post.path">
+                    <NuxtLink :to="post.path" :aria-label="`Go to ${post.title} post`">
                         <h2
                             class="text-2xl font-semibold mb-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-gray-900 dark:text-white line-clamp-2">
                             {{ post.title }}
