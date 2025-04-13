@@ -15,6 +15,10 @@ const props = defineProps<{
 }>();
 
 const getUtmLink = computed(() => {
+    if (!props.href) {
+        return '';
+    }
+
     const url = new URL(props.href);
 
     let utmSource = 'unknown';

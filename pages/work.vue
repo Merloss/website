@@ -10,11 +10,11 @@
                 :enter="{ opacity: 1, y: 0, transition: { delay: 200 + index * 150 } }"
                 class="bg-white/50 dark:bg-black/30 p-6 rounded-lg shadow-md backdrop-blur-sm border border-white/10">
                 <h2 class="text-2xl font-semibold mb-2">{{ work.title }}</h2>
-                <NuxtLink :to="work.link" target="_blank" rel="noopener noreferrer"
+                <Link :href="work.link || ''" target="_blank" rel="noopener noreferrer"
                     :aria-label="`Go to ${work.company} page`"
                     class="text-lg font-medium text-primary-600 dark:text-primary-400 mb-1 italic">
-                    {{ work.company }}
-                </NuxtLink>
+                {{ work.company }}
+                </Link>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ work.start_date }} - {{ work.end_date }}</p>
 
                 <div v-if="work.description_items && work.description_items.length > 0">
@@ -39,6 +39,8 @@
 </template>
 
 <script setup lang="ts">
+import Link from '~/components/link.vue';
+
 definePageMeta({
     name: 'Work',
     icon: 'material-symbols:card-travel',

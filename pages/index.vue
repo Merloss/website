@@ -32,10 +32,12 @@
 					<div v-for="work in WORK" :key="work.company"
 						class="m-2 sm:px-8 border-2 border-dashed dark:border-white/10 border-black/10 p-4 rounded-md transition-all duration-300">
 						<div class="flex flex-col m-0">
-							<NuxtLink :to="work.link" :aria-label="`Go to ${work.company} page`" target="_blank"
-								rel="noopener noreferrer" class="font-bold text-3xl">
-								{{ work.company }}
-							</NuxtLink>
+							<Link :href="work.link || ''" :aria-label="`Go to ${work.company} page`" target="_blank"
+								rel="noopener noreferrer" class="font-bold text-3xl group">
+							{{ work.company }}
+							<Icon name="material-symbols:link" v-if="work.link"
+								class="text-gray-500 self-end text-xl invisible group-hover:visible" />
+							</Link>
 							<div class=" flex flex-col ml-1.5 mt-1">
 								<i class="text-sm text-gray-500"> {{ work.location }}</i>
 								<span class="text-sm text-gray-500">{{ work.start_date }} - {{ work.end_date }}</span>
@@ -57,7 +59,6 @@
 								<Icon name="material-symbols:arrow-forward" class="text-gray-500 self-end text-xl" />
 							</h3>
 							<p class="text-gray-500 !m-0">{{ post.short_description }}</p>
-
 						</div>
 					</NuxtLink>
 
