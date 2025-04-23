@@ -1,0 +1,42 @@
+---
+title: ""
+short_description: ""
+tags: [example1, example2]
+image: ""
+blurhash: ""
+published_at: "2077-04-23T12:00:00.000Z"
+---
+
+# A Sample Blog Post
+
+Welcome to this dummy blog post! This is an example to demonstrate a typical blog structure.
+
+## Introduction
+
+This post is designed to show how a blog might look with some basic content. It includes a mix of text, headings, lists, and code blocks to give you an idea of formatting.
+
+## Key Points
+
+- Point 1: This is a sample point to illustrate content.
+- Point 2: Another example to fill out the list.
+- Point 3: A final point to wrap things up.
+
+Example Code
+Here are a couple of code examples in Go to demonstrate code blocks in the blog post.
+
+Go Example: Square Function
+A simple Go function to calculate the square of a number:
+
+```go
+package main
+
+import "fmt"
+
+func square(num int) int {
+    return num * num
+}
+
+func main() {
+    fmt.Println(square(5)) // Output: 25
+}
+```
