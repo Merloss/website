@@ -39,6 +39,7 @@ export default defineNuxtConfig({
 		build: {
 			markdown: {
 				highlight: {
+					langs: ["go", "js", "ts", "bash"],
 					theme: {
 						default: "github-light",
 						dark: "github-dark",
