@@ -23,7 +23,7 @@ const getUtmLink = computed(() => {
 
     let utmSource = 'unknown';
 
-    if (process.client && window?.location?.host) {
+    if (import.meta.client && window?.location?.host) {
         utmSource = window.location.host;
     } else {
         const event = useRequestEvent();
