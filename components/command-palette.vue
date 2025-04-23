@@ -29,7 +29,7 @@
                             :id="`command-${getGlobalIndex(groupIndex, commandIndex)}`" :key="command.id" role="option"
                             :aria-selected="isSelected(groupIndex, commandIndex)"
                             class="flex cursor-pointer items-center space-x-3 rounded-md px-3 py-2.5 text-gray-700 dark:text-gray-200"
-                            :class="{ 'bg-gray-100/80 dark:bg-white/10': isSelected(groupIndex, commandIndex) }"
+                            :class="{ 'bg-gray-200/80 dark:bg-white/10': isSelected(groupIndex, commandIndex) }"
                             @mouseenter="setSelectedIndexByIndices(groupIndex, commandIndex)"
                             @click="executeCommand(command)">
                             <Icon v-if="command.icon" :name="command.icon"
