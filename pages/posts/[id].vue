@@ -69,6 +69,8 @@ const formatDate = (dateString: string | undefined) => {
     margin-bottom: 1.5em;
 }
 
+.post-detail-content :deep(h1),
+.post-detail-content :deep(h2),
 .post-detail-content :deep(h3) {
     position: relative;
     padding-left: 1.25em;
@@ -76,6 +78,8 @@ const formatDate = (dateString: string | undefined) => {
     scroll-margin-top: 4rem;
 }
 
+.post-detail-content :deep(h1::before),
+.post-detail-content :deep(h2::before),
 .post-detail-content :deep(h3::before) {
     content: '#';
     position: absolute;
@@ -89,10 +93,14 @@ const formatDate = (dateString: string | undefined) => {
     color: #9ca3af;
 }
 
+.dark .post-detail-content :deep(h1::before),
+.dark .post-detail-content :deep(h2::before),
 .dark .post-detail-content :deep(h3::before) {
     color: #6b7280;
 }
 
+.post-detail-content :deep(h1:hover::before),
+.post-detail-content :deep(h2:hover::before),
 .post-detail-content :deep(h3:hover::before) {
     opacity: 1;
 }
