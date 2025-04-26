@@ -121,7 +121,7 @@ html.dark {
 }
 
 html {
-	@apply bg-gray-200 dark:bg-black text-gray-900 dark:text-gray-200 transition-colors duration-300;
+	@apply bg-gray-200 dark:bg-black text-gray-900 dark:text-gray-200 transition-colors duration-300 scroll-smooth;
 }
 
 html:not(.dark) .prose pre,
@@ -187,7 +187,6 @@ html:not(.dark) pre {
 
 	.metallic {
 		@apply dark:text-transparent bg-clip-text dark:text-shadow-[0_0_10px_rgba(255,255,255,0.5)] dark:bg-[linear-gradient(45deg,#666_5%,#fff_15%,#aaa_30%,#eee_50%,#aaa_70%,#fff_85%,#666_95%)] dark:bg-clip-text;
-		-webkit-background-clip: text;
 	}
 
 	a {
