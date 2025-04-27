@@ -201,3 +201,15 @@ html:not(.dark) pre {
 .dark ::selection {
 	@apply bg-white/20;
 }
+
+.prose :where(:not(pre) > code) {
+	@apply font-mono text-sm;
+	@apply bg-black/5 dark:bg-white/10;
+	@apply px-1.5 py-0.5;
+	@apply rounded;
+}
+
+.prose :where(code)::before,
+.prose :where(code)::after {
+	content: none !important;
+}
