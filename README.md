@@ -11,6 +11,7 @@ This repository contains the source code for my personal website and blog, built
 - **SEO Friendly:** Meta tags automatically generated for pages and posts.
 - **Responsive Design:** Adapts to different screen sizes.
 - **Page Transitions & Animations:** Smooth transitions and entry animations using VueUse Motion.
+- **Mermaid Renderer:** Support for rendering Mermaid diagrams within Markdown content.
 
 ## 🛠️ Technologies Used
 
@@ -25,37 +26,60 @@ This repository contains the source code for my personal website and blog, built
 
 ```plaintext
 .
-├── assets/
+├── @types/             # Global TypeScript type definitions
+│   └── index.d.ts
+├── assets/             # Uncompiled assets (CSS, fonts)
 │   └── css/
-│       └── main.css  # Global styles and Tailwind directives
-├── components/
-│   ├── command-palette.vue # Command palette component
-│   ├── footer.vue      # Site footer
-│   ├── image.vue       # Image component with blurhash
-│   ├── link.vue        # Custom link component (e.g., with UTM)
-│   ├── music-presence.vue # music presence component (Last.fm)
-│   └── navbar.vue      # Site navigation bar
-├── constants/
-│   ├── socials.ts    # Social media links
-│   └── work.ts       # Work experience data
-├── content/            # Markdown files for blog posts
-│   └── posts/
-│       └── ...
-├── layouts/            # Layout files (if any, Nuxt uses app.vue by default)
-├── node_modules/     # Project dependencies
-├── pages/
-│   ├── index.vue       # Home/About page
+│       └── main.css
+├── components/         # Reusable Vue components
+│   ├── command-palette-button.vue
+│   ├── command-palette.vue
+│   ├── content/        # Components used by Nuxt Content
+│   │   └── prose-pre.vue
+│   ├── footer.vue
+│   ├── image.vue
+│   ├── link.vue
+│   ├── mermaid.vue
+│   ├── music-notes.vue
+│   ├── music-presence.vue
+│   ├── navbar.vue
+│   └── theme-switch.vue
+├── composables/        # Reusable Vue composables (logic)
+│   ├── socials.ts
+│   ├── themes.ts
+│   └── work.ts
+├── content/            # Markdown content files (managed as a submodule)
+│   ├── posts/          # Blog posts (submodule content)
+│   └── post.md.template # Template for new posts
+├── pages/              # Application pages and routes
+│   ├── index.vue       # Home page
 │   ├── posts/
-│   │   ├── [id].vue    # Individual blog post page
+│   │   ├── [id].vue    # Dynamic page for single post
 │   │   └── index.vue   # Blog posts list page
 │   └── work.vue        # Work experience page
-├── public/             # Static assets (e.g., favicon, robots.txt)
+├── plugins/            # Nuxt plugins
+│   ├── medium-zoom.client.ts
+│   └── mermaid.client.ts
+├── public/             # Static files directly served
+│   ├── favicon.ico
+│   └── robots.txt
+├── server/             # Server-side logic
+│   ├── api/            # API routes
+│   │   └── track.ts    # Last.fm tracking API
+│   └── tsconfig.json   # Server-specific TS config
+├── .env                # Environment variables (gitignored)
+├── .gitignore          # Files/directories ignored by Git
+├── .gitmodules         # Submodule configuration
 ├── app.vue             # Main application layout/entry point
+├── content.config.ts   # Nuxt Content module configuration
 ├── error.vue           # Custom error page (e.g., 404)
-├── nuxt.config.ts      # Nuxt configuration file
-├── package.json        # Project dependencies and scripts
+├── LICENSE             # Project license file
+├── nuxt.config.ts      # Nuxt main configuration file
+├── package.json        # Project manifest (dependencies, scripts)
 ├── README.md           # This file
-└── tsconfig.json       # TypeScript configuration
+├── tailwind.config.js  # Tailwind CSS configuration
+├── tsconfig.json       # Main TypeScript configuration
+└── yarn.lock           # Yarn dependency lock file
 ```
 
 ## 🚀 Getting Started
@@ -71,8 +95,11 @@ Clone the repository and install dependencies:
 
 ```bash
 # Clone the repo
-git clone https://github.com/merloss/website.git
+git clone https://github.com/merloss/website.git # if you want to get existing posts, add '--recurse-submodules' flag
 cd website
+
+# If you already cloned without submodules, initialize them:
+# git submodule update --init --recursive
 
 # Install dependencies (choose your package manager)
 
