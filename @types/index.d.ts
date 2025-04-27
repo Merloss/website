@@ -68,12 +68,21 @@ interface Command {
 	action?: () => void;
 	shortcuts?: string[];
 }
+
 interface CommandGroup {
 	key: string;
 	label: string;
 	commands: Command[];
 }
+
 interface FetchedPost {
 	path: string;
 	title: string;
+}
+
+interface ReadingTime {
+	text: string;
+	minutes: number;
+	time: number;
+	words: number;
 }

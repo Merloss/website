@@ -30,7 +30,8 @@
                     <div
                         class="text-sm text-gray-500 dark:text-gray-500 mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
                         <time v-if="post.published_at" :datetime="post.published_at.toString()">
-                            {{ formatDate(post.published_at.toString()) }}
+                            {{ formatDate(post.published_at.toString()) }} • {{ (post.meta.readingTime as
+                                ReadingTime)?.text }}
                         </time>
                         <div v-if="post.tags && post.tags.length > 0" class="mt-2 flex flex-wrap gap-2">
                             <span v-for="tag in post.tags" :key="tag"
@@ -69,7 +70,7 @@ useSeoMeta({
 });
 
 const { data: posts } = await useAsyncData(() =>
-    queryCollection("content").select("title", "short_description", "published_at", "tags", "image", "blurhash", "path").order("published_at", "DESC").all(),
+    queryCollection("content").select("title", "short_description", "published_at", "tags", "image", "blurhash", "path", "meta").order("published_at", "DESC").all(),
 );
 
 const formatDate = (dateString: string | undefined) => {
