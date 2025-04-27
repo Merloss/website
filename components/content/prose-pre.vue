@@ -1,8 +1,8 @@
 <template>
     <CodeBlock v-if="!isMermaid" v-bind="props" class="relative group transition-all duration-300 overflow-visible">
         <div :class="[
-            'justify-end h-0 text-white cursor-pointer sticky flex top-24 right-4 z-10 transition-all duration-300',
-            copiedState ? 'opacity-100' : 'opacity-0 group-hover:opacity-30'
+            'justify-end h-0 dark:text-white text-black cursor-pointer sticky flex top-24 right-4 z-10 transition-all duration-300',
+            copiedState ? 'opacity-100' : 'opacity-0 dark:group-hover:opacity-30 group-hover:opacity-60'
         ]" @click.stop="copyCode">
             {{ copiedState ? 'copied 🥥' : 'copy' }}
         </div>
