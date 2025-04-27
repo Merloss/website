@@ -11,4 +11,8 @@ export const SOCIALS = [
 		name: "GitHub",
 		url: "https://github.com/merloss",
 	},
+	{
+		name: "E-mail",
+		url: "mailto:ben@kerim.im",
+	},
 ];
