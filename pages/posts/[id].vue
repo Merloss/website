@@ -75,7 +75,7 @@ const formatDate = (dateString: string | undefined) => {
     position: relative;
     padding-left: 1.25em;
     margin-left: -1.25em;
-    scroll-margin-top: 4rem;
+    scroll-margin-top: 6.25rem;
 }
 
 .post-detail-content :deep(h1::before),
