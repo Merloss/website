@@ -207,6 +207,7 @@ html:not(.dark) pre {
 	@apply bg-black/5 dark:bg-white/10;
 	@apply px-1.5 py-0.5;
 	@apply rounded;
+	@apply text-amber-300;
 }
 
 .prose :where(code)::before,
