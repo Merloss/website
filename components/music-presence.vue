@@ -48,6 +48,8 @@ const fetchPresence = async () => {
             isLoading.value = false;
         }
     }
+
+    return track.value;
 };
 
 onMounted(() => {
@@ -59,6 +61,10 @@ onUnmounted(() => {
     if (intervalId) {
         clearInterval(intervalId);
     }
+});
+
+defineExpose({
+    track,
 });
 </script>
 

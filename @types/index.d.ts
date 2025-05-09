@@ -58,6 +58,7 @@ interface TrackInfo {
 	artistName: string | null;
 	albumImageUrl: string | null;
 	trackUrl: string | null;
+	hex: string | null; // hex color of the album image
 }
 
 interface Command {
