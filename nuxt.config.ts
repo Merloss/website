@@ -56,5 +56,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		LASTFM_USERNAME: process.env.LASTFM_USERNAME,
 		LASTFM_WEB_API_KEY: process.env.LASTFM_WEB_API_KEY,
+		GITHUB_USERNAME: process.env.GITHUB_USERNAME,
+		GITHUB_REPOSITORY_NAME: process.env.GITHUB_REPOSITORY_NAME,
 	},
 });
