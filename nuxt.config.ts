@@ -9,6 +9,48 @@ export default defineNuxtConfig({
 			htmlAttrs: {
 				lang: "en",
 			},
+			meta: [
+				{
+					name: 'description',
+					content:
+						'Kerim Kara is a developer and writer. He develops websites and writes about technology. Click to learn more!',
+				},
+				{
+					name: 'keywords',
+					content:
+						'kerim, kerim.im, kerim kara, turkiye, developer, writer, technology, web development, programming',
+				},
+				{ name: 'author', content: 'Kerim Kara' },
+				{
+					name: 'application-name',
+					content: 'Personal Website of Kerim Kara',
+				},
+				{ property: 'og:url', content: 'https://kerim.im' },
+				{ property: 'og:type', content: 'website' },
+				{ property: 'og:title', content: 'Kerim Kara' },
+				{
+					property: 'og:description',
+					content:
+						'Kerim Kara is a developer and writer. He develops websites and writes about technology. Click to learn more!',
+				},
+				{
+					property: 'og:image',
+					content: 'https://kerim.im/api/og/simple',
+				},
+				{ name: 'twitter:card', content: 'summary_large_image' },
+				{ property: 'twitter:domain', content: 'kerim.im' },
+				{ property: 'twitter:url', content: 'https://kerim.im' },
+				{ name: 'twitter:title', content: 'Kerim Kara' },
+				{
+					name: 'twitter:description',
+					content:
+						'Kerim Kara is a developer and writer. He develops websites and writes about technology. Click to learn more!',
+				},
+				{
+					name: 'twitter:image',
+					content: 'https://kerim.im/api/og/simple',
+				},
+			],
 		},
 	},
 	modules: [

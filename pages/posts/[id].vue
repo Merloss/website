@@ -49,7 +49,17 @@ useSeoMeta({
     description: () => page.value?.short_description || 'An interesting blog post.',
     ogTitle: () => page.value?.title || 'Blog Post',
     ogDescription: () => page.value?.short_description || 'An interesting blog post.',
-    ogImage: () => page.value?.image ? page.value.image : undefined,
+    ogImage: () => {
+        const baseUrl = useRequestURL().origin;
+        return `${baseUrl}/api/og/simple/${id}`;
+    },
+    twitterCard: 'summary_large_image',
+    twitterTitle: () => page.value?.title || 'Blog Post',
+    twitterDescription: () => page.value?.short_description || 'An interesting blog post.',
+    twitterImage: () => {
+        const baseUrl = useRequestURL().origin;
+        return `${baseUrl}/api/og/simple/${id}`;
+    },
 });
 
 const formatDate = (dateString: string | undefined) => {

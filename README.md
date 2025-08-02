@@ -9,6 +9,7 @@ This repository contains the source code for my personal website and blog, built
 - **Last.fm Integration:** Displaying current music presence (if configured).
 - **Dark Mode:** Theme switching support.
 - **SEO Friendly:** Meta tags automatically generated for pages and posts.
+- **Dynamic OG Images:** Automatically generated Open Graph images for social media sharing.
 - **Responsive Design:** Adapts to different screen sizes.
 - **Page Transitions & Animations:** Smooth transitions and entry animations using VueUse Motion.
 - **Mermaid Renderer:** Support for rendering Mermaid diagrams within Markdown content.
@@ -65,7 +66,14 @@ This repository contains the source code for my personal website and blog, built
 │   └── robots.txt
 ├── server/             # Server-side logic
 │   ├── api/            # API routes
+│   │   ├── og/         # Open Graph image generation
+│   │   │   ├── simple/ # SVG-based OG images (recommended)
+│   │   │   │   ├── [id].ts    # Post-specific OG images
+│   │   │   │   └── index.ts   # Default OG image
+│   │   │   └── [id].ts        # Legacy PNG OG images
 │   │   └── track.ts    # Last.fm tracking API
+│   ├── utils/          # Server utilities
+│   │   └── content.ts  # Content reading utilities
 │   └── tsconfig.json   # Server-specific TS config
 ├── .env                # Environment variables (gitignored)
 ├── .gitignore          # Files/directories ignored by Git

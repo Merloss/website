@@ -84,9 +84,20 @@ definePageMeta({
 
 useSeoMeta({
     title: 'Changelog',
-    description: 'View the latest changes and updates',
+    description: 'View the latest changes and updates to the website.',
     ogTitle: 'Changelog',
-    ogDescription: 'View the latest changes and updates',
+    ogDescription: 'View the latest changes and updates to the website.',
+    ogImage: () => {
+        const baseUrl = useRequestURL().origin;
+        return `${baseUrl}/api/og/simple`;
+    },
+    twitterCard: 'summary_large_image',
+    twitterTitle: 'Changelog',
+    twitterDescription: 'View the latest changes and updates to the website.',
+    twitterImage: () => {
+        const baseUrl = useRequestURL().origin;
+        return `${baseUrl}/api/og/simple`;
+    },
 });
 
 const commits = ref<GithubCommit[]>([]);
