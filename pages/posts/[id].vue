@@ -36,6 +36,7 @@
 import Image from '~/components/image.vue';
 
 const { id } = useRoute().params;
+const baseUrl = useRequestURL().origin;
 
 const { data: page } = await useAsyncData(() => queryCollection('content').path(`/posts/${id}`).first())
 
@@ -49,17 +50,11 @@ useSeoMeta({
     description: () => page.value?.short_description || 'An interesting blog post.',
     ogTitle: () => page.value?.title || 'Blog Post',
     ogDescription: () => page.value?.short_description || 'An interesting blog post.',
-    ogImage: () => {
-        const baseUrl = useRequestURL().origin;
-        return `${baseUrl}/api/og/simple/${id}`;
-    },
+    ogImage: `${baseUrl}/api/og/simple/${id}`,
     twitterCard: 'summary_large_image',
     twitterTitle: () => page.value?.title || 'Blog Post',
     twitterDescription: () => page.value?.short_description || 'An interesting blog post.',
-    twitterImage: () => {
-        const baseUrl = useRequestURL().origin;
-        return `${baseUrl}/api/og/simple/${id}`;
-    },
+    twitterImage: `${baseUrl}/api/og/simple/${id}`,
 });
 
 const formatDate = (dateString: string | undefined) => {

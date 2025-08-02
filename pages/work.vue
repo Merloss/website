@@ -47,22 +47,18 @@ definePageMeta({
     shortcuts: ['G', 'W']
 });
 
+const baseUrl = useRequestURL().origin;
+
 useSeoMeta({
     title: 'Work Experience',
     description: 'My work experience and professional background.',
     ogTitle: 'Work Experience',
     ogDescription: 'My work experience and professional background.',
-    ogImage: () => {
-        const baseUrl = useRequestURL().origin;
-        return `${baseUrl}/api/og/simple`;
-    },
+    ogImage: `${baseUrl}/api/og/simple`,
     twitterCard: 'summary_large_image',
     twitterTitle: 'Work Experience',
     twitterDescription: 'My work experience and professional background.',
-    twitterImage: () => {
-        const baseUrl = useRequestURL().origin;
-        return `${baseUrl}/api/og/simple`;
-    },
+    twitterImage: `${baseUrl}/api/og/simple`,
 });
 
 const expandedCards = ref(new Set<number>());

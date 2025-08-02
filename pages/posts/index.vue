@@ -62,22 +62,18 @@ definePageMeta({
     shortcuts: ['G', 'P']
 });
 
+const baseUrl = useRequestURL().origin;
+
 useSeoMeta({
     title: "All Posts",
     description: "A list of all blog posts.",
     ogTitle: "All Posts",
     ogDescription: "A list of all blog posts.",
-    ogImage: () => {
-        const baseUrl = useRequestURL().origin;
-        return `${baseUrl}/api/og/simple`;
-    },
+    ogImage: `${baseUrl}/api/og/simple`,
     twitterCard: 'summary_large_image',
     twitterTitle: "All Posts",
     twitterDescription: "A list of all blog posts.",
-    twitterImage: () => {
-        const baseUrl = useRequestURL().origin;
-        return `${baseUrl}/api/og/simple`;
-    },
+    twitterImage: `${baseUrl}/api/og/simple`,
 });
 
 const { data: posts } = await useAsyncData(() =>

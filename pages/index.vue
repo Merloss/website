@@ -95,22 +95,18 @@ definePageMeta({
 	shortcuts: ['G', 'H']
 });
 
+const baseUrl = useRequestURL().origin;
+
 useSeoMeta({
 	title: 'About Kerim Kara',
 	description: 'Learn more about Kerim Kara, a software developer based in Turkiye.',
 	ogTitle: 'About Kerim Kara',
 	ogDescription: 'Learn more about Kerim Kara, a software developer based in Turkiye.',
-	ogImage: () => {
-		const baseUrl = useRequestURL().origin;
-		return `${baseUrl}/api/og/simple`;
-	},
+	ogImage: `${baseUrl}/api/og/simple`,
 	twitterCard: 'summary_large_image',
 	twitterTitle: 'About Kerim Kara',
 	twitterDescription: 'Learn more about Kerim Kara, a software developer based in Turkiye.',
-	twitterImage: () => {
-		const baseUrl = useRequestURL().origin;
-		return `${baseUrl}/api/og/simple`;
-	},
+	twitterImage: `${baseUrl}/api/og/simple`,
 });
 
 const { data: posts } = await useAsyncData(() =>
