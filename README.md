@@ -28,14 +28,17 @@ This repository contains the source code for my personal website and blog, built
 ```plaintext
 .
 ├── @types/             # Global TypeScript type definitions
+│   ├── github.d.ts
 │   └── index.d.ts
 ├── assets/             # Uncompiled assets (CSS, fonts)
 │   └── css/
 │       └── main.css
 ├── components/         # Reusable Vue components
+│   ├── code-block.vue
 │   ├── command-palette-button.vue
 │   ├── command-palette.vue
 │   ├── content/        # Components used by Nuxt Content
+│   │   ├── prose-a.vue
 │   │   └── prose-pre.vue
 │   ├── footer.vue
 │   ├── image.vue
@@ -44,6 +47,9 @@ This repository contains the source code for my personal website and blog, built
 │   ├── music-notes.vue
 │   ├── music-presence.vue
 │   ├── navbar.vue
+│   ├── OgImage/        # Open Graph image components
+│   │   ├── base.vue
+│   │   └── post.vue
 │   └── theme-switch.vue
 ├── composables/        # Reusable Vue composables (logic)
 │   ├── socials.ts
@@ -53,6 +59,7 @@ This repository contains the source code for my personal website and blog, built
 │   ├── posts/          # Blog posts (submodule content)
 │   └── post.md.template # Template for new posts
 ├── pages/              # Application pages and routes
+│   ├── changelog.vue
 │   ├── index.vue       # Home page
 │   ├── posts/
 │   │   ├── [id].vue    # Dynamic page for single post
@@ -66,14 +73,9 @@ This repository contains the source code for my personal website and blog, built
 │   └── robots.txt
 ├── server/             # Server-side logic
 │   ├── api/            # API routes
-│   │   ├── og/         # Open Graph image generation
-│   │   │   ├── simple/ # SVG-based OG images (recommended)
-│   │   │   │   ├── [id].ts    # Post-specific OG images
-│   │   │   │   └── index.ts   # Default OG image
-│   │   │   └── [id].ts        # Legacy PNG OG images
+│   │   ├── github/     # GitHub API integration
+│   │   │   └── commits.ts
 │   │   └── track.ts    # Last.fm tracking API
-│   ├── utils/          # Server utilities
-│   │   └── content.ts  # Content reading utilities
 │   └── tsconfig.json   # Server-specific TS config
 ├── .env                # Environment variables (gitignored)
 ├── .gitignore          # Files/directories ignored by Git
