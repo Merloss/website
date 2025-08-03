@@ -81,18 +81,19 @@ definePageMeta({
     shortcuts: ['C', 'H']
 });
 
-const baseUrl = useRequestURL().origin;
-
 useSeoMeta({
     title: 'Changelog',
     description: 'View the latest changes and updates to the website.',
     ogTitle: 'Changelog',
     ogDescription: 'View the latest changes and updates to the website.',
-    ogImage: `${baseUrl}/api/og/simple`,
     twitterCard: 'summary_large_image',
     twitterTitle: 'Changelog',
     twitterDescription: 'View the latest changes and updates to the website.',
-    twitterImage: `${baseUrl}/api/og/simple`,
+});
+
+defineOgImageComponent('base', {
+    title: 'Changelog',
+    description: 'View the latest changes and updates to the website.',
 });
 
 const commits = ref<GithubCommit[]>([]);

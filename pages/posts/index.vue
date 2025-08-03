@@ -62,23 +62,25 @@ definePageMeta({
     shortcuts: ['G', 'P']
 });
 
-const baseUrl = useRequestURL().origin;
-
 useSeoMeta({
     title: "All Posts",
     description: "A list of all blog posts.",
     ogTitle: "All Posts",
     ogDescription: "A list of all blog posts.",
-    ogImage: `${baseUrl}/api/og/simple`,
     twitterCard: 'summary_large_image',
     twitterTitle: "All Posts",
     twitterDescription: "A list of all blog posts.",
-    twitterImage: `${baseUrl}/api/og/simple`,
 });
+
 
 const { data: posts } = await useAsyncData(() =>
     queryCollection("content").select("title", "short_description", "published_at", "tags", "image", "blurhash", "path", "meta").order("published_at", "DESC").all(),
 );
+
+defineOgImageComponent('base', {
+    title: 'All Posts',
+    description: `Explore all ${posts?.value?.length} blog posts.`,
+});
 
 const formatDate = (dateString: string | undefined) => {
     if (!dateString) return "";

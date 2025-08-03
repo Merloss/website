@@ -61,21 +61,6 @@ interface TrackInfo {
 	hex: string | null; // hex color of the album image
 }
 
-interface Command {
-	id: string;
-	label: string;
-	icon?: string;
-	to?: string;
-	action?: () => void;
-	shortcuts?: string[];
-}
-
-interface CommandGroup {
-	key: string;
-	label: string;
-	commands: Command[];
-}
-
 interface FetchedPost {
 	path: string;
 	title: string;
