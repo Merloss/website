@@ -154,6 +154,23 @@ html:not(.dark) pre {
 		--border-spin-mid-color: rgba(224, 224, 224, 0.8);
 	}
 
+	.hero-blur {
+		filter: blur(200px);
+		-webkit-filter: blur(200px);
+		transform: translateX(-50%);
+		will-change: filter;
+		opacity: 0.5;
+	}
+
+	@-moz-document url-prefix() {
+		.hero-blur {
+			transform: translateX(-50%) translateZ(0);
+			backface-visibility: hidden;
+			filter: blur(150px);
+			opacity: 0.3;
+		}
+	}
+
 	@keyframes spin-gradient {
 		0% {
 			transform: rotate(0deg);

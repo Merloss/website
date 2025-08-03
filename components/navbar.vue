@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="sticky top-4 z-50 rounded-xl border border-white/10 bg-white/10 dark:bg-black/10 backdrop-blur-lg shadow-lga px-6 py-3 mx-auto w-full">
+        class="sticky top-4 z-50 rounded-xl border border-white/10 bg-white/80 dark:bg-black/80 backdrop-blur-lg shadow-lga px-6 py-3 mx-auto w-full supports-[backdrop-filter]:bg-white/10 supports-[backdrop-filter]:dark:bg-black/10">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-6">
                 <NuxtLink to="/" aria-label="Go to home page"

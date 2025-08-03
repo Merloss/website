@@ -3,7 +3,7 @@
 		<div class="max-w-3xl mx-auto">
 			<div class="text-center mb-12 relative">
 				<div :style="`background-color: ${hex}`"
-					class="size-[800px] rounded-full md:inline-block absolute -top-70 transform -translate-x-1/2 blur-[500px] transition-colors duration-1000 ease-in-out overflow-hidden" />
+					class="size-[800px] rounded-full md:inline-block absolute -top-70 hero-blur transition-colors duration-1000 ease-in-out overflow-hidden" />
 				<h1 v-motion :initial="{ opacity: 0, y: 50 }" :enter="{ opacity: 1, y: 0, transition: { delay: 100 } }"
 					class="text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
 					About Kerim Kara
