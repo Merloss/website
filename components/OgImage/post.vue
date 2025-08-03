@@ -16,7 +16,7 @@
                 </p>
 
                 <p v-if="readingTime" class="text-lg text-gray-600 mt-auto">
-                    📖 {{ readingTime.text }} min read
+                    📖 {{ readingTime.text }}
                 </p>
             </div>
 
