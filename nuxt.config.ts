@@ -93,5 +93,9 @@ export default defineNuxtConfig({
 		LASTFM_WEB_API_KEY: process.env.LASTFM_WEB_API_KEY,
 		GITHUB_USERNAME: process.env.GITHUB_USERNAME,
 		GITHUB_REPOSITORY_NAME: process.env.GITHUB_REPOSITORY_NAME,
+		R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
+		R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID,
+		R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,
+		R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
 	},
 });
