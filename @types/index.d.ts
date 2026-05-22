@@ -72,3 +72,14 @@ interface ReadingTime {
 	time: number;
 	words: number;
 }
+
+interface SteamScreenshot {
+	id: string;
+	appid: string;
+	game_name: string;
+	aspect_ratio: number;
+	preview_url: string; // low-res grid preview, paints immediately
+	thumbnail_url?: string; // crisp grid thumbnail, resolved lazily
+	full_image_url?: string; // original full resolution, resolved lazily
+	url: string; // link to the screenshot on Steam
+}
