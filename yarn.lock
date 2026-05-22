@@ -1162,6 +1162,13 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.27.1.tgz#5efe5a112938b1180e98c76685ff9185cfa4f16e"
   integrity sha512-d5X6RMYv6taIymSk8JBP+nxv8DQAMY6A51GPgusqLdK9wBz5wWIXy1KjTck6HnjE9hqJzJRdk+1p/t5soSbCtw==
 
+"@iconify-json/logos@^1.2.11":
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/@iconify-json/logos/-/logos-1.2.11.tgz#5bd0479d0bdc2e48adb664b0fab728d4e5013f1c"
+  integrity sha512-fOo4pGEatuyuCFNL+cwquYMa2Im0oJHRHV7lt/Qqs5Ode/lPImHCQcfTtPzZj7qYMPb/h8YHN3TG54uEowrjNQ==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify-json/material-symbols@^1.2.18":
   version "1.2.18"
   resolved "https://registry.yarnpkg.com/@iconify-json/material-symbols/-/material-symbols-1.2.18.tgz#cd7e3c6abfccd3919a9536819958236d998f5e32"
