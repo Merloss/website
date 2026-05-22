@@ -78,7 +78,7 @@ export default defineNuxtConfig({
 					"remark-reading-time": {},
 				},
 				highlight: {
-					langs: ["go", "js", "ts", "bash"],
+					langs: ["go", "js", "ts", "bash", "hcl"],
 					theme: {
 						default: "github-light",
 						dark: "github-dark",

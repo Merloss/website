@@ -224,10 +224,16 @@ html:not(.dark) pre {
 	@apply bg-black/5 dark:bg-white/10;
 	@apply px-1.5 py-0.5;
 	@apply rounded;
-	@apply text-orange-500 dark:text-orange-400;
+	@apply text-indigo-600 dark:text-indigo-300;
 }
 
 .prose :where(code)::before,
 .prose :where(code)::after {
 	content: none !important;
+}
+
+/* The inline link icon is only useful for links inside paragraphs; in lists
+   (e.g. the "Kaynaklar" section) every item is already a link, so hide it. */
+.prose li .link-icon {
+	display: none;
 }
