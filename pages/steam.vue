@@ -26,19 +26,20 @@
 
             <!-- Gallery -->
             <div v-else-if="screenshots.length > 0" class="gallery">
-                <button v-for="(shot, index) in screenshots" :key="shot.id" :ref="(el) => observeItem(el, shot)"
-                    type="button" v-motion :initial="{ opacity: 0, scale: 0.96 }"
+                <button v-for="(shot, index) in screenshots" :key="shot.id" type="button" v-motion
+                    :initial="{ opacity: 0, scale: 0.96 }"
                     :enter="{ opacity: 1, scale: 1, transition: { delay: Math.min(index, 12) * 0.04, duration: 0.3 } }"
                     :style="{ aspectRatio: shot.aspect_ratio }"
                     class="group relative block w-full overflow-hidden rounded-lg border border-black/5 dark:border-white/10 hover:border-black/20 dark:hover:border-white/30 shadow-sm hover:shadow-xl transition-all duration-300 cursor-zoom-in"
                     @click="openLightbox(index)">
-                    <!-- Low-res preview: paints immediately -->
-                    <img :src="shot.preview_url" alt="" aria-hidden="true"
+                    <!-- Low-res preview: paints immediately as a blurred placeholder -->
+                    <img :src="shot.preview_url" alt="" aria-hidden="true" loading="lazy"
                         class="absolute inset-0 w-full h-full object-cover scale-110 blur-md" />
-                    <!-- Crisp thumbnail: fades in once resolved -->
-                    <img v-if="shot.thumbnail_url" :src="shot.thumbnail_url" :alt="`${shot.game_name} screenshot`"
+                    <!-- Crisp thumbnail, served from R2: fades in once loaded -->
+                    <img :src="thumbSrc(shot)" :alt="`${shot.game_name} screenshot`" loading="lazy" decoding="async"
                         class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:scale-105"
-                        @load="(e) => ((e.target as HTMLElement).style.opacity = '1')" />
+                        @load="(e) => ((e.target as HTMLElement).style.opacity = '1')"
+                        @error="(e) => onThumbError(e, shot)" />
                     <div
                         class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <Icon name="material-symbols:zoom-out-map"
@@ -92,11 +93,11 @@
                             <img :src="current!.preview_url" alt="" aria-hidden="true"
                                 class="absolute inset-0 w-full h-full object-cover blur-xl scale-105 transition-opacity duration-300"
                                 :class="imgReady ? 'opacity-0' : 'opacity-100'" />
-                            <img v-if="current!.full_image_url" :key="current!.id" :src="current!.full_image_url"
+                            <img :key="current!.id" :src="fullSrc(current!)"
                                 :alt="`${current!.game_name} screenshot`"
                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
                                 :class="imgReady ? 'opacity-100' : 'opacity-0'" @load="imgReady = true"
-                                @error="imgReady = true" />
+                                @error="onFullError" />
                             <div v-if="!imgReady"
                                 class="absolute inset-0 flex items-center justify-center pointer-events-none">
                                 <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-white" />
@@ -173,53 +174,32 @@ const loadMore = () => {
     page.value += 1;
 };
 
-// --- Lazy full-resolution resolution -------------------------------------
-// Each shot's crisp thumbnail + original image is fetched only when it scrolls
-// into view (or is opened), one small request at a time, so we stay under
-// Steam's rate limit. Results are cached server-side, so this is paid once.
-const resolving = new Set<string>();
-let activeResolves = 0;
-const resolveQueue: (() => void)[] = [];
+// Images are served from our R2-backed endpoint. The first request for a shot
+// pulls it from Steam and stores it in R2 permanently; every later request (and
+// every other visitor) is served straight from R2. Native lazy-loading means a
+// thumbnail is only requested when its tile nears the viewport.
+const thumbSrc = (shot: SteamScreenshot) => `/api/steam/image?id=${shot.id}&size=thumb`;
+const fullSrc = (shot: SteamScreenshot) => `/api/steam/image?id=${shot.id}&size=full`;
 
-const pumpQueue = () => {
-    while (activeResolves < 4 && resolveQueue.length) {
-        resolveQueue.shift()!();
-    }
+// During the very first warm-up (before R2 is populated) Steam can briefly
+// throttle a request and the image 502s. Retry a few times with a growing delay
+// — the `&r=` param just busts the browser's negative cache (the server ignores
+// it). Once the image lands in R2, this never fires again.
+const MAX_IMG_RETRIES = 4;
+const retryImg = (img: HTMLImageElement, url: string): boolean => {
+    const n = Number(img.dataset.retry || 0);
+    if (n >= MAX_IMG_RETRIES) return false;
+    img.dataset.retry = String(n + 1);
+    setTimeout(() => { img.src = `${url}&r=${n + 1}`; }, 1500 * (n + 1));
+    return true;
 };
-
-const resolveShot = (shot: SteamScreenshot): Promise<void> =>
-    new Promise((done) => {
-        if (shot.full_image_url || resolving.has(shot.id)) return done();
-        resolving.add(shot.id);
-        const run = async () => {
-            activeResolves++;
-            try {
-                const res = await $fetch<{ thumbnail_url: string; full_image_url: string }>(
-                    `/api/steam/screenshot?id=${shot.id}`
-                );
-                shot.thumbnail_url = res.thumbnail_url;
-                shot.full_image_url = res.full_image_url;
-            } catch {
-                resolving.delete(shot.id); // allow a later retry
-            } finally {
-                activeResolves--;
-                pumpQueue();
-                done();
-            }
-        };
-        resolveQueue.push(run);
-        pumpQueue();
-    });
-
-// --- Viewport observer for the grid ---------------------------------------
-let itemObserver: IntersectionObserver | null = null;
-const pendingEls = new Map<Element, SteamScreenshot>();
-
-const observeItem = (el: Element | any, shot: SteamScreenshot) => {
-    if (!el || !(el instanceof Element)) return;
-    if (itemObserver) itemObserver.observe(el);
-    else pendingEls.set(el, shot);
-    (el as any).__shot = shot;
+const onThumbError = (e: Event, shot: SteamScreenshot) => {
+    retryImg(e.target as HTMLImageElement, thumbSrc(shot));
+};
+const onFullError = (e: Event) => {
+    if (!current.value || !retryImg(e.target as HTMLImageElement, fullSrc(current.value))) {
+        imgReady.value = true; // give up → settle on the blurred preview
+    }
 };
 
 // --- Lightbox --------------------------------------------------------------
@@ -231,17 +211,9 @@ const current = computed(() =>
     lightboxIndex.value === null ? null : screenshots.value[lightboxIndex.value] ?? null
 );
 
-const showShot = async (index: number) => {
+const showShot = (index: number) => {
     lightboxIndex.value = index;
-    imgReady.value = false;
-    const shot = screenshots.value[index];
-    if (!shot.full_image_url) {
-        await resolveShot(shot);
-        if (lightboxIndex.value !== index) return;
-        // Resolve failed → settle on the blurred preview instead of spinning forever.
-        if (!shot.full_image_url) imgReady.value = true;
-    }
-    // When the full image is available, its <img @load> flips imgReady.
+    imgReady.value = false; // the full <img> @load flips this back to true
 };
 
 const openLightbox = (index: number) => {
@@ -274,22 +246,7 @@ let scrollObserver: IntersectionObserver | null = null;
 onMounted(() => {
     window.addEventListener('keydown', onKeydown);
 
-    // Resolve a shot when its tile nears the viewport, then stop watching it.
-    itemObserver = new IntersectionObserver(
-        (entries) => {
-            for (const entry of entries) {
-                if (!entry.isIntersecting) continue;
-                const shot = (entry.target as any).__shot as SteamScreenshot | undefined;
-                if (shot) resolveShot(shot);
-                itemObserver!.unobserve(entry.target);
-            }
-        },
-        { rootMargin: '300px' }
-    );
-    for (const [el] of pendingEls) itemObserver.observe(el);
-    pendingEls.clear();
-
-    // Infinite scroll.
+    // Infinite scroll: load the next page as the sentinel nears the viewport.
     scrollObserver = new IntersectionObserver(
         (entries) => { if (entries[0].isIntersecting) loadMore(); },
         { rootMargin: '500px' }
@@ -300,7 +257,6 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', onKeydown);
     document.body.style.overflow = '';
-    itemObserver?.disconnect();
     scrollObserver?.disconnect();
 });
 </script>

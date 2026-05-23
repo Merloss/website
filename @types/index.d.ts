@@ -78,8 +78,8 @@ interface SteamScreenshot {
 	appid: string;
 	game_name: string;
 	aspect_ratio: number;
-	preview_url: string; // low-res grid preview, paints immediately
-	thumbnail_url?: string; // crisp grid thumbnail, resolved lazily
-	full_image_url?: string; // original full resolution, resolved lazily
+	preview_url: string; // low-res grid preview, paints immediately as a blur
 	url: string; // link to the screenshot on Steam
+	// The crisp thumbnail and full image are served from /api/steam/image
+	// (R2-backed), keyed by `id`, so the client builds those URLs from `id`.
 }
