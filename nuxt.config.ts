@@ -25,7 +25,6 @@ export default defineNuxtConfig({
 					name: "application-name",
 					content: "Personal Website of Kerim Kara",
 				},
-				{ property: "og:url", content: "https://kerim.im" },
 				{ property: "og:type", content: "website" },
 				{ property: "og:title", content: "Kerim Kara" },
 				{
@@ -35,7 +34,6 @@ export default defineNuxtConfig({
 				},
 				{ name: "twitter:card", content: "summary_large_image" },
 				{ property: "twitter:domain", content: "kerim.im" },
-				{ property: "twitter:url", content: "https://kerim.im" },
 				{ name: "twitter:title", content: "Kerim Kara" },
 				{
 					name: "twitter:description",

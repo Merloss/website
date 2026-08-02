@@ -10,6 +10,28 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute();
+const site = useSiteConfig();
+
+// Query strings never make a new page (?shot= on /steam is a lightbox state),
+// so the canonical is always the bare path.
+const canonical = computed(() => {
+  const origin = String(site.url).replace(/\/$/, '');
+  return `${origin}${route.path === '/' ? '' : route.path.replace(/\/+$/, '')}`;
+});
+
+useHead({
+  titleTemplate: (title) =>
+    title && !title.includes('Kerim Kara') ? `${title} · Kerim Kara` : title || 'Kerim Kara',
+  link: [{ rel: 'canonical', href: canonical }],
+});
+
+useSeoMeta({
+  ogUrl: canonical,
+  ogSiteName: 'Kerim Kara',
+  ogLocale: 'en_US',
+});
+
 const commandPaletteRef = ref();
 
 onMounted(() => {

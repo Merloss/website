@@ -44,14 +44,50 @@ if (!page.value) {
     throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true });
 }
 
+const site = useSiteConfig();
+const origin = String(site.url).replace(/\/$/, '');
+const postUrl = `${origin}/posts/${id}`;
+const publishedAt = page.value.published_at
+    ? new Date(page.value.published_at).toISOString()
+    : undefined;
+
 useSeoMeta({
     title: () => page.value?.title || 'Blog Post',
     description: () => page.value?.short_description || 'An interesting blog post.',
     ogTitle: () => page.value?.title || 'Blog Post',
     ogDescription: () => page.value?.short_description || 'An interesting blog post.',
+    ogType: 'article',
+    ogLocale: 'tr_TR',
+    articlePublishedTime: publishedAt,
+    articleAuthor: ['Kerim Kara'],
+    articleTag: () => page.value?.tags,
     twitterCard: 'summary_large_image',
     twitterTitle: () => page.value?.title || 'Blog Post',
     twitterDescription: () => page.value?.short_description || 'An interesting blog post.',
+});
+
+// The posts are written in Turkish while the rest of the site is English.
+useHead({
+    htmlAttrs: { lang: 'tr' },
+    script: [
+        {
+            type: 'application/ld+json',
+            innerHTML: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'BlogPosting',
+                headline: page.value.title,
+                description: page.value.short_description,
+                inLanguage: 'tr-TR',
+                datePublished: publishedAt,
+                dateModified: publishedAt,
+                keywords: page.value.tags,
+                image: page.value.image ? `${origin}${page.value.image}` : undefined,
+                mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+                author: { '@type': 'Person', name: 'Kerim Kara', url: origin },
+                publisher: { '@type': 'Person', name: 'Kerim Kara', url: origin },
+            }),
+        },
+    ],
 });
 
 defineOgImageComponent('post', { post: page.value, readingTime: page.value.meta.readingTime as ReadingTime })

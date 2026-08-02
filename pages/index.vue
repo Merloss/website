@@ -110,6 +110,42 @@ defineOgImageComponent('base', {
 	description: 'Learn more about Kerim Kara, a software developer based in Turkiye.',
 });
 
+const site = useSiteConfig();
+const origin = String(site.url).replace(/\/$/, '');
+
+useHead({
+	script: [
+		{
+			type: 'application/ld+json',
+			innerHTML: JSON.stringify({
+				'@context': 'https://schema.org',
+				'@graph': [
+					{
+						'@type': 'Person',
+						'@id': `${origin}/#person`,
+						name: 'Kerim Kara',
+						alternateName: 'merloss',
+						url: origin,
+						jobTitle: 'Software Developer',
+						description:
+							'Software developer based in Turkiye, specialising in backend systems.',
+						address: { '@type': 'PostalAddress', addressCountry: 'TR' },
+						sameAs: SOCIALS.filter((s) => s.url.startsWith('http')).map((s) => s.url),
+					},
+					{
+						'@type': 'WebSite',
+						'@id': `${origin}/#website`,
+						url: origin,
+						name: 'Kerim Kara',
+						inLanguage: 'en',
+						publisher: { '@id': `${origin}/#person` },
+					},
+				],
+			}),
+		},
+	],
+});
+
 const { data: posts } = await useAsyncData(() =>
 	queryCollection("content").select("title", "short_description", "published_at", "path").order("published_at", "DESC").limit(3).all(),
 );
