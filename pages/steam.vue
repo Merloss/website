@@ -66,7 +66,7 @@
         <!-- Lightbox -->
         <Teleport to="body">
             <Transition name="lightbox">
-                <div v-if="lightboxIndex !== null"
+                <div v-if="shotId !== null"
                     class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm select-none"
                     @click.self="closeLightbox">
                     <button aria-label="Close"
@@ -75,12 +75,12 @@
                         <Icon name="material-symbols:close" class="text-2xl" />
                     </button>
 
-                    <button v-if="screenshots.length > 1" aria-label="Previous"
+                    <button v-if="screenshots.length > 1 && currentIndex >= 0" aria-label="Previous"
                         class="absolute left-3 sm:left-6 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition"
                         @click.stop="step(-1)">
                         <Icon name="material-symbols:chevron-left" class="text-3xl" />
                     </button>
-                    <button v-if="screenshots.length > 1" aria-label="Next"
+                    <button v-if="screenshots.length > 1 && currentIndex >= 0" aria-label="Next"
                         class="absolute right-3 sm:right-6 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition"
                         @click.stop="step(1)">
                         <Icon name="material-symbols:chevron-right" class="text-3xl" />
@@ -90,7 +90,7 @@
                         <div class="relative max-w-full max-h-[82vh] overflow-hidden rounded-lg shadow-2xl"
                             :style="{ aspectRatio: String(current!.aspect_ratio), width: `min(100%, calc(82vh * ${current!.aspect_ratio}))` }">
                             <!-- Blurred preview placeholder until the full image is painted -->
-                            <img :src="current!.preview_url" alt="" aria-hidden="true"
+                            <img v-if="current!.preview_url" :src="current!.preview_url" alt="" aria-hidden="true"
                                 class="absolute inset-0 w-full h-full object-cover blur-xl scale-105 transition-opacity duration-300"
                                 :class="imgReady ? 'opacity-0' : 'opacity-100'" />
                             <img :key="current!.id" :src="fullSrc(current!)"
@@ -108,7 +108,7 @@
                                 <Icon name="material-symbols:videogame-asset" />
                                 {{ current!.game_name }}
                                 <span class="text-gray-500">·</span>
-                                {{ lightboxIndex! + 1 }} / {{ total || screenshots.length }}
+                                {{ currentIndex >= 0 ? currentIndex + 1 : '–' }} / {{ total || screenshots.length }}
                             </p>
                             <a :href="current!.url" target="_blank" rel="noopener noreferrer"
                                 class="mt-1 inline-block text-xs text-gray-400 hover:text-white transition">
@@ -127,19 +127,6 @@ definePageMeta({
     name: 'Forza Horizon Shots',
     icon: 'material-symbols:photo-camera-outline',
     shortcuts: ['G', 'S'],
-});
-
-useSeoMeta({
-    title: 'Forza Horizon Screenshots',
-    description: 'Full-quality Forza Horizon screenshots from my Steam profile.',
-    ogTitle: 'Forza Horizon Screenshots',
-    ogDescription: 'Full-quality Forza Horizon screenshots from my Steam profile.',
-    twitterCard: 'summary_large_image',
-});
-
-defineOgImageComponent('base', {
-    title: 'Forza Horizon Screenshots',
-    description: 'Full-quality screenshots from my Steam profile.',
 });
 
 interface ScreenshotResponse {
@@ -174,6 +161,59 @@ const loadMore = () => {
     page.value += 1;
 };
 
+const route = useRoute();
+
+const shotId = computed(() => {
+    const raw = route.query.shot;
+    const value = Array.isArray(raw) ? raw[0] : raw;
+    return typeof value === 'string' && /^\d+$/.test(value) ? value : null;
+});
+
+const site = useSiteConfig();
+const absolute = (path: string) => `${String(site.url).replace(/\/$/, '')}${path}`;
+
+const PAGE_TITLE = 'Forza Horizon Screenshots';
+const PAGE_DESCRIPTION = 'Full-quality Forza Horizon screenshots from my Steam profile.';
+
+const shotSeo = computed(() => {
+    const id = shotId.value;
+    if (!id) return null;
+    const shot = screenshots.value.find((s) => s.id === id);
+    const game = shot?.game_name ?? 'Forza Horizon';
+    return {
+        title: `${game} Screenshot`,
+        description: `A full-quality ${game} screenshot from my Steam profile.`,
+        image: absolute(`/api/steam/og/${id}.jpg`),
+        aspect: shot?.aspect_ratio ?? 16 / 9,
+    };
+});
+
+useSeoMeta({
+    title: () => shotSeo.value?.title ?? PAGE_TITLE,
+    description: () => shotSeo.value?.description ?? PAGE_DESCRIPTION,
+    ogTitle: () => shotSeo.value?.title ?? PAGE_TITLE,
+    ogDescription: () => shotSeo.value?.description ?? PAGE_DESCRIPTION,
+    ogUrl: () => absolute(`${route.path}${shotId.value ? `?shot=${shotId.value}` : ''}`),
+    twitterTitle: () => shotSeo.value?.title ?? PAGE_TITLE,
+    twitterDescription: () => shotSeo.value?.description ?? PAGE_DESCRIPTION,
+    twitterCard: 'summary_large_image',
+});
+
+const OG_WIDTH = 1200;
+if (shotSeo.value) {
+    defineOgImage({
+        url: shotSeo.value.image,
+        width: OG_WIDTH,
+        height: Math.round(OG_WIDTH / shotSeo.value.aspect),
+        alt: shotSeo.value.title,
+    });
+} else {
+    defineOgImageComponent('base', {
+        title: PAGE_TITLE,
+        description: 'Full-quality screenshots from my Steam profile.',
+    });
+}
+
 // Images are served from our R2-backed endpoint. The first request for a shot
 // pulls it from Steam and stores it in R2 permanently; every later request (and
 // every other visitor) is served straight from R2. Native lazy-loading means a
@@ -202,40 +242,73 @@ const onFullError = (e: Event) => {
     }
 };
 
-// --- Lightbox --------------------------------------------------------------
-const lightboxIndex = ref<number | null>(null);
+// --- Lightbox (driven by ?shot, so an open shot is a shareable link) --------
+// The URL is the single source of truth: opening writes it, opening such a link
+// reopens the same image, and Back closes the lightbox — all for free.
+const router = useRouter();
+
 // True once the full-resolution image has actually painted. Until then we show
 // the blurred preview + a spinner (so there's never a blank/half-loaded frame).
 const imgReady = ref(false);
-const current = computed(() =>
-    lightboxIndex.value === null ? null : screenshots.value[lightboxIndex.value] ?? null
+
+const currentIndex = computed(() =>
+    shotId.value === null
+        ? -1
+        : screenshots.value.findIndex((s) => s.id === shotId.value)
 );
 
-const showShot = (index: number) => {
-    lightboxIndex.value = index;
+// Usually the open shot is already in the grid. If a shared link points to a
+// shot on a not-yet-loaded page (or one no longer in the feed), fall back to a
+// minimal shot built from the id alone — the image still resolves from R2 by
+// id, so the picture shows regardless.
+const current = computed<SteamScreenshot | null>(() => {
+    const id = shotId.value;
+    if (id === null) return null;
+    return (
+        screenshots.value.find((s) => s.id === id) ?? {
+            id,
+            appid: '',
+            game_name: 'Forza Horizon',
+            aspect_ratio: 16 / 9,
+            preview_url: '',
+            url: `https://steamcommunity.com/sharedfiles/filedetails/?id=${id}`,
+        }
+    );
+});
+
+watch(shotId, (id) => {
     imgReady.value = false; // the full <img> @load flips this back to true
-};
+    if (import.meta.client) document.body.style.overflow = id ? 'hidden' : '';
+}, { immediate: true });
+
+// If a deep-linked shot isn't loaded yet, keep pulling pages until it appears
+// (so its caption and prev/next become accurate). Bounded by the feed length.
+watch([shotId, () => screenshots.value.length, isLoadingMore], () => {
+    if (!import.meta.client) return;
+    const id = shotId.value;
+    if (!id || screenshots.value.some((s) => s.id === id)) return;
+    if (hasMore.value && !isLoadingMore.value && !pending.value) loadMore();
+});
 
 const openLightbox = (index: number) => {
-    document.body.style.overflow = 'hidden';
-    showShot(index);
+    router.push({ query: { ...route.query, shot: screenshots.value[index].id } });
 };
 
 const closeLightbox = () => {
-    lightboxIndex.value = null;
-    document.body.style.overflow = '';
+    const query = { ...route.query };
+    delete query.shot;
+    router.replace({ query });
 };
 
 const step = (delta: number) => {
-    if (lightboxIndex.value === null) return;
-    const next = lightboxIndex.value + delta;
-    if (next < 0 || next >= screenshots.value.length) return;
-    showShot(next);
+    const next = currentIndex.value + delta;
+    if (currentIndex.value === -1 || next < 0 || next >= screenshots.value.length) return;
+    router.replace({ query: { ...route.query, shot: screenshots.value[next].id } });
     if (next >= screenshots.value.length - 3) loadMore();
 };
 
 const onKeydown = (e: KeyboardEvent) => {
-    if (lightboxIndex.value === null) return;
+    if (shotId.value === null) return;
     if (e.key === 'Escape') closeLightbox();
     else if (e.key === 'ArrowRight') step(1);
     else if (e.key === 'ArrowLeft') step(-1);
