@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import { PROFILE } from '../lib/site';
+---
+
+<Base {...Astro.props}>
+  <div class="page">
+    <div class="strip strip-left" />
+    <div class="strip strip-right" />
+    <div class="line line-nav" />
+    <div class="line line-content-left" />
+    <div class="line line-content-right" />
+    <div class="line line-container-right" />
+
+    <nav class="side-nav fold-in">
+      <a href="/" aria-label={PROFILE.name}>
+        <svg class="logo" width="40" height="32" viewBox="0 0 35 28" fill="#fff">
+          <path d="M4 4h5v20H4z" />
+          <path d="M9 12.6 17.6 4H24L13 15z" />
+          <path d="M12.6 14.2l3.2-3.1L24 24h-6.4z" />
+          <path class="cursor" d="M27 21.5h6V24h-6z" />
+        </svg>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/posts">Posts</a>
+        <a class="nav-link" href={`mailto:${PROFILE.email}`}>Contact</a>
+      </div>
+    </nav>
+
+    <main class="main">
+      <div class="content">
+        <slot />
+        <footer class="footer">© {new Date().getFullYear()} {PROFILE.name}</footer>
+      </div>
+    </main>
+  </div>
+</Base>

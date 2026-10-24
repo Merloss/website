@@ -1,0 +1,33 @@
+---
+import { MONTHS } from '../lib/github';
+
+const { days, total } = Astro.props;
+const pad = new Date(days[0].date + 'T00:00:00Z').getUTCDay();
+const cols = Math.ceil((pad + days.length) / 7);
+const months = [];
+let last = -1;
+const cells = days.map((d, i) => ({ ...d, month: +d.date.slice(5, 7) - 1, day: +d.date.slice(8), col: Math.floor((pad + i) / 7) }));
+for (const c of cells) {
+  if (c.month !== last && c.day <= 7 && c.col < cols - 2) {
+    last = c.month;
+    months.push({ col: c.col, label: MONTHS[last] });
+  }
+}
+---
+
+<div class="contrib" style={{ '--cols': cols }}>
+  <div class="contrib-months">
+    {months.map((m) => <span style={{ gridColumn: m.col + 1 }}>{m.label}</span>)}
+  </div>
+  <div class="contrib-grid">
+    {Array.from({ length: pad }, () => <i class="pad" />)}
+    {cells.map((c) => (
+      <i
+        class={'l' + c.level}
+        style={{ '--col': c.col }}
+        title={`${c.count || 'No'} contribution${c.count === 1 ? '' : 's'} on ${MONTHS[c.month]} ${c.day}`}
+      />
+    ))}
+  </div>
+  <p class="contrib-total">{total.toLocaleString('en-US')} contributions in the last year</p>
+</div>

@@ -1,0 +1,32 @@
+---
+import Shell from '../../components/Shell.astro';
+import { getPosts, fmtDate } from '../../lib/posts';
+import { toHTML } from '../../lib/markdown';
+import { PROFILE } from '../../lib/site';
+
+export const getStaticPaths = () => getPosts().map((post) => ({ params: { slug: post.slug }, props: { post } }));
+
+const { post } = Astro.props;
+const html = await toHTML(post.body);
+---
+
+<Shell
+  title={`${post.title} | ${PROFILE.name}`}
+  description={post.desc}
+  image={`/posts/${post.slug}/og.png`}
+  imageAlt={`Blog post by ${PROFILE.name}`}
+  article={post}
+>
+  <a class="back-link fold-in" href="/posts">← All posts</a>
+  <h1 class="post-heading fold-in blur-in" style="animation-delay: 50ms">{post.title}</h1>
+  <p class="post-meta fold-in" style="animation-delay: 100ms">
+    {fmtDate(post.date)} · {post.minutes} min read
+  </p>
+  <div class="tags fold-in" style="animation-delay: 100ms">
+    {post.tags.map((t) => <span class="stack-item">{t}</span>)}
+  </div>
+  <div class="divider fold-in" style="animation-delay: 150ms" />
+  <article class="prose fold-in" style="animation-delay: 200ms" set:html={html} />
+  <script src="../../scripts/copy-code.js"></script>
+  <script src="../../scripts/diagrams.js"></script>
+</Shell>
