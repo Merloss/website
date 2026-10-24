@@ -1,0 +1,27 @@
+---
+import Shell from '../../components/Shell.astro';
+import { getPosts, fmtDate } from '../../lib/posts';
+import { PROFILE } from '../../lib/site';
+
+const posts = getPosts();
+---
+
+<Shell title={`Posts | ${PROFILE.name}`} description="Notes on Go, databases and infrastructure.">
+  <h1 class="title fold-in blur-in" style="animation-delay: 50ms">Posts</h1>
+  <p class="body-text fold-in blur-in" style="animation-delay: 100ms">
+    Notes on Go, databases and infrastructure. Written in Turkish.
+  </p>
+  <div class="divider fold-in" style="animation-delay: 150ms" />
+  <section class="section fold-in" style="animation-delay: 200ms">
+    <h3 class="section-heading">{posts.length} posts</h3>
+    <div class="post-list">
+      {posts.map((p) => (
+        <a class="post" href={`/posts/${p.slug}`}>
+          <span class="post-title">{p.title}</span>
+          <span class="post-desc">{p.desc}</span>
+          <span class="post-meta">{fmtDate(p.date)} · {p.minutes} min read</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Shell>

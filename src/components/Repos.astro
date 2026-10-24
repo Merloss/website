@@ -1,0 +1,22 @@
+---
+import { LANG, ago } from '../lib/github';
+
+const { repos } = Astro.props;
+---
+
+<div class="repo-grid">
+  {repos.map((r) => (
+    <a class="repo" href={r.html_url} target="_blank" rel="noopener noreferrer">
+      <span class="repo-inner">
+        <span class="repo-top"><span class="repo-name">{r.name}</span><span class="repo-arrow">↗</span></span>
+        <span class="repo-desc">{(r.description || 'No description yet.').replace(/\p{Extended_Pictographic}/gu, '').trim()}</span>
+      </span>
+      <span class="repo-meta">
+        <span class="lang" style={{ '--c': LANG[r.language] || '#9d9e9e' }} />{r.language}
+        <span>★ {r.stargazers_count}</span>
+        <span>⑂ {r.forks_count}</span>
+        {r.pushed_at && <span class="repo-updated">{ago(r.pushed_at)}</span>}
+      </span>
+    </a>
+  ))}
+</div>

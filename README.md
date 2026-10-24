@@ -1,149 +1,77 @@
-# My Personal Website & Blog
+# kerim.im
 
-This repository contains the source code for my personal website and blog, built with [Nuxt 3](https://nuxt.com/) and styled with [Tailwind CSS](https://tailwindcss.com/).
+Source for [kerim.im](https://kerim.im), my personal site and blog. Built with [Astro](https://astro.build) and deployed on [Vercel](https://vercel.com).
 
-## ✨ Features
+The browser gets static HTML, one stylesheet and a few kilobytes of plain JavaScript for the effects. There is no client-side framework.
 
-- **Blog:** Markdown-based content management using Nuxt Content.
-- **Command Palette:** Quick navigation and actions (Ctrl/Cmd + K).
-- **Last.fm Integration:** Displaying current music presence (if configured).
-- **Dark Mode:** Theme switching support.
-- **SEO Friendly:** Meta tags automatically generated for pages and posts.
-- **Dynamic OG Images:** Automatically generated Open Graph images for social media sharing.
-- **Responsive Design:** Adapts to different screen sizes.
-- **Page Transitions & Animations:** Smooth transitions and entry animations using VueUse Motion.
-- **Mermaid Renderer:** Support for rendering Mermaid diagrams within Markdown content.
+## Features
 
-## 🛠️ Technologies Used
+- Home page with career, stack, GitHub repos and a contribution graph, refreshed hourly with Vercel ISR
+- Markdown blog with syntax highlighting ([Shiki](https://shiki.style)) and [Mermaid](https://mermaid.js.org) diagrams
+- Open Graph images generated at build time with [Satori](https://github.com/vercel/satori)
+- RSS feed, sitemap and robots.txt
+- SQL mode toggle, scanline text effects and a particle wordmark, all on `<canvas>`
+- Respects `prefers-reduced-motion`
 
-- **Framework:** [Nuxt 3](https://nuxt.com/) (with Vue 3)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/) (with `@tailwindcss/typography` plugin)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Content:** [Nuxt Content](https://content.nuxt.com/)
-- **Icons:** [Iconify](https://iconify.design/) (via `nuxt-icon`)
-- **Utilities & Animations:** [VueUse](https://vueuse.org/) (including `@vueuse/motion`)
-
-## 📂 Project Structure
-
-```plaintext
-.
-├── @types/             # Global TypeScript type definitions
-│   ├── github.d.ts
-│   └── index.d.ts
-├── assets/             # Uncompiled assets (CSS, fonts)
-│   └── css/
-│       └── main.css
-├── components/         # Reusable Vue components
-│   ├── code-block.vue
-│   ├── command-palette-button.vue
-│   ├── command-palette.vue
-│   ├── content/        # Components used by Nuxt Content
-│   │   ├── prose-a.vue
-│   │   └── prose-pre.vue
-│   ├── footer.vue
-│   ├── image.vue
-│   ├── link.vue
-│   ├── mermaid.vue
-│   ├── music-notes.vue
-│   ├── music-presence.vue
-│   ├── navbar.vue
-│   ├── OgImage/        # Open Graph image components
-│   │   ├── base.vue
-│   │   └── post.vue
-│   └── theme-switch.vue
-├── composables/        # Reusable Vue composables (logic)
-│   ├── socials.ts
-│   ├── themes.ts
-│   └── work.ts
-├── content/            # Markdown content files (managed as a submodule)
-│   ├── posts/          # Blog posts (submodule content)
-│   └── post.md.template # Template for new posts
-├── pages/              # Application pages and routes
-│   ├── changelog.vue
-│   ├── index.vue       # Home page
-│   ├── posts/
-│   │   ├── [id].vue    # Dynamic page for single post
-│   │   └── index.vue   # Blog posts list page
-│   └── work.vue        # Work experience page
-├── plugins/            # Nuxt plugins
-│   ├── medium-zoom.client.ts
-│   └── mermaid.client.ts
-├── public/             # Static files directly served
-│   ├── favicon.ico
-│   └── robots.txt
-├── server/             # Server-side logic
-│   ├── api/            # API routes
-│   │   ├── github/     # GitHub API integration
-│   │   │   └── commits.ts
-│   │   └── track.ts    # Last.fm tracking API
-│   └── tsconfig.json   # Server-specific TS config
-├── .env                # Environment variables (gitignored)
-├── .gitignore          # Files/directories ignored by Git
-├── .gitmodules         # Submodule configuration
-├── app.vue             # Main application layout/entry point
-├── content.config.ts   # Nuxt Content module configuration
-├── error.vue           # Custom error page (e.g., 404)
-├── LICENSE             # Project license file
-├── nuxt.config.ts      # Nuxt main configuration file
-├── package.json        # Project manifest (dependencies, scripts)
-├── README.md           # This file
-├── tailwind.config.js  # Tailwind CSS configuration
-├── tsconfig.json       # Main TypeScript configuration
-└── yarn.lock           # Yarn dependency lock file
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (LTS version recommended)
-- A package manager: [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [yarn](https://yarnpkg.com/), or [bun](https://bun.sh/)
-
-### Setup
-
-Clone the repository and install dependencies:
+## Getting started
 
 ```bash
-# Clone the repo
-git clone https://github.com/merloss/website.git # if you want to get existing posts, add '--recurse-submodules' flag
+git clone --recurse-submodules https://github.com/Merloss/website.git
 cd website
-
-# If you already cloned without submodules, initialize them:
-# git submodule update --init --recursive
-
-# Install dependencies (choose your package manager)
-
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+npm run dev
 ```
 
-### Development Server
+The site runs at http://localhost:4321.
 
-Start the development server on `http://localhost:3000`:
+If you cloned without `--recurse-submodules`, fetch the posts with:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+git submodule update --init
 ```
 
-The server will automatically reload when you make changes to the code.
+## Making it yours
 
+All personal details live in one file, [`src/lib/site.js`](src/lib/site.js): name, role, bio, location, time zone, email, social handles, career, stack and the repo used for the commit link. Edit it, swap the logos in `public/logos/`, and the pages, meta tags, RSS feed and OG images follow.
+
+Posts are Markdown files in `posts/`, which is a submodule pointing at [merloss/posts](https://github.com/merloss/posts). Point it at your own repo or replace it with a plain folder. Each post needs this front matter:
+
+```yaml
 ---
+title: "Post title"
+short_description: "One line shown in lists and meta tags"
+published_at: "2026-05-23T12:00:00Z"
+tags: [go, postgres]
+---
+```
+
+## Environment
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `GITHUB_TOKEN` | Recommended | Raises the GitHub API rate limit for the repo list. A fine-grained token with no permissions is enough. |
+
+## Project structure
+
+```text
+posts/            Markdown posts (git submodule)
+public/           Static files: icon, company logos
+src/
+  components/     Shell, contribution graph, repo cards
+  layouts/        Base layout with meta tags
+  lib/            Site config, posts, GitHub data, Markdown and OG rendering
+  pages/          Routes, including og.png, feed.xml, sitemap.xml and robots.txt
+  scripts/        Client-side effects
+  styles/         Global CSS
+```
+
+## Commands
+
+| Command | Action |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` | Build for production into `.vercel/output` |
+
+## License
+
+[MIT](LICENSE)

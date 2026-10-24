@@ -1,0 +1,181 @@
+---
+import Base from '../layouts/Base.astro';
+import Contributions from '../components/Contributions.astro';
+import Repos from '../components/Repos.astro';
+import { getGitHub } from '../lib/github';
+import { getPosts } from '../lib/posts';
+import { PROFILE, CAREER, STACK, CONNECT } from '../lib/site';
+
+export const prerender = false;
+
+const ext = { target: '_blank', rel: 'noopener noreferrer' };
+const COMMIT = import.meta.env.COMMIT;
+const GITHUB = `https://github.com/${PROFILE.github}`;
+
+const gh = await getGitHub();
+const posts = getPosts().slice(0, 3);
+---
+
+<Base>
+  <div class="page" id="page">
+    <div class="strip strip-left" />
+    <div class="strip strip-right" />
+    <div class="line line-nav" />
+    <div class="line line-content-left" />
+    <div class="line line-content-right" />
+    <div class="line line-container-right" />
+
+    <div class="packets" id="packets" aria-hidden="true" />
+
+    <nav class="side-nav fold-in">
+      <a href="/" aria-label={PROFILE.name}>
+        <svg class="logo" id="logo" width="40" height="32" viewBox="0 0 35 28" fill="#fff">
+          <path d="M4 4h5v20H4z" />
+          <path d="M9 12.6 17.6 4H24L13 15z" />
+          <path d="M12.6 14.2l3.2-3.1L24 24h-6.4z" />
+          <path class="cursor" d="M27 21.5h6V24h-6z" />
+        </svg>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="#career">Career</a>
+        <a class="nav-link" href="#github">GitHub</a>
+        <a class="nav-link" href="#posts">Posts</a>
+        <a class="nav-link" href="#connect">Connect</a>
+      </div>
+    </nav>
+
+    <div class="side-contact fold-in" style={{ animationDelay: '400ms' }}>
+      <p class="side-contact-label">Say hello:</p>
+      <span class="copy-wrap">
+        <span class="copied" id="copied">$ copied to clipboard</span>
+        <a href={`mailto:${PROFILE.email}`} class="side-contact-email underline-link" data-copy={PROFILE.email}>{PROFILE.email}</a>
+      </span>
+    </div>
+
+    <main class="main">
+      <div class="right-col fold-in" style={{ animationDelay: '200ms' }}>
+        {gh.allTime != null && (
+          <a class="stat" href={GITHUB} {...ext}>
+            {gh.allTime.toLocaleString('en-US')} contributions all-time
+            <svg class="bars" width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><rect class="bar1" x="0" y="6" width="2" height="6" rx="1" /><rect class="bar2" x="4" y="2" width="2" height="10" rx="1" /><rect class="bar3" x="8" y="4" width="2" height="8" rx="1" /></svg>
+          </a>
+        )}
+        <button class="mode-toggle" id="sql" type="button" aria-pressed="false">SQL <span class="switch"><span class="knob" /></span></button>
+        <div class="nav-divider" />
+        {COMMIT && (
+          <a class="nav-link follow-link commit" href={`${PROFILE.repo}/commit/${COMMIT}`} {...ext} aria-label="Source code on GitHub">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z" /></svg>
+            {COMMIT.slice(0, 7)}
+          </a>
+        )}
+      </div>
+
+      <div class="content">
+        <div class="greeting fold-in" style={{ animationDelay: '50ms' }}>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M10.6 7.6A4.8 4.8 0 0 1 4.4 1.4a4.8 4.8 0 1 0 6.2 6.2Z" /></svg>
+          <span id="greet">Hello</span><span class="dot" /><span class="tabular" id="clock">{PROFILE.location}</span>
+        </div>
+
+        <h1 class="title fold-in blur-in" style={{ animationDelay: '100ms' }}>
+          {PROFILE.name}<br />
+          <span class="word">
+            <span class="accent" id="accent">Backend</span>
+            <canvas class="ascii" id="ascii" aria-hidden="true" />
+          </span>{' '}
+          Developer
+        </h1>
+
+        <p class="body-text fold-in blur-in" style={{ animationDelay: '150ms' }}>
+          <span class="strong">{PROFILE.tagline}</span><br />
+          {PROFILE.bio}
+        </p>
+
+        <div class="button-row fold-in" style={{ animationDelay: '200ms' }}>
+          <a href={`mailto:${PROFILE.email}`} class="btn-primary"><span class="shimmer">Get in touch</span></a>
+          <a href={GITHUB} {...ext} class="btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z" /></svg>
+            <span class="shimmer">@{PROFILE.github}</span>
+          </a>
+        </div>
+
+        <div class="divider fold-in" style={{ animationDelay: '250ms' }} />
+
+        <section id="career" class="section fold-in" style={{ animationDelay: '300ms' }}>
+          <h3 class="section-heading" data-sql="SELECT company, role FROM career" data-rows={CAREER.length}>Career</h3>
+          <div class="career-list">
+            {CAREER.map((c) => {
+              const Row = c.url ? 'a' : 'div';
+              return (
+                <Row class="career-row" {...(c.url ? { href: c.url, ...ext } : {})}>
+                  <div class="career-left">
+                    <div class="career-logo"><img src={c.logo.src} alt={c.company} width={c.logo.width} height={c.logo.height} /></div>
+                    <div class="career-info">
+                      <span class="career-company">{c.company}</span>
+                      <span class="career-role">{c.role}</span>
+                    </div>
+                  </div>
+                  <span class="career-date">{c.dates}</span>
+                </Row>
+              );
+            })}
+          </div>
+        </section>
+
+        <div class="divider reveal" />
+
+        <section class="section reveal">
+          <h3 class="section-heading" data-sql="SELECT name FROM stack" data-rows={STACK.length}>Stack</h3>
+          <div class="stack-grid">
+            {STACK.map((s) => <span class="stack-item">{s}</span>)}
+          </div>
+        </section>
+
+        <div class="divider reveal" />
+
+        <section id="github" class="section reveal">
+          <div class="section-head">
+            <h3 class="section-heading" data-sql="SELECT * FROM repos" data-rows={gh.repos.length}>GitHub</h3>
+            <a class="section-link underline-link" href={GITHUB} {...ext}>github.com/{PROFILE.github}</a>
+          </div>
+          {gh.days && <Contributions days={gh.days} total={gh.total} />}
+          <Repos repos={gh.repos} />
+        </section>
+
+        <div class="divider reveal" />
+
+        <section id="posts" class="section reveal">
+          <div class="section-head">
+            <h3 class="section-heading" data-sql="SELECT title FROM posts LIMIT 3" data-rows={posts.length}>Latest posts</h3>
+            <a class="section-link underline-link" href="/posts">All posts</a>
+          </div>
+          <div class="post-list">
+            {posts.map((p) => (
+              <a class="post" href={`/posts/${p.slug}`}>
+                <span class="post-title">{p.title}</span>
+                <span class="post-desc">{p.desc}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <div class="divider reveal" />
+
+        <section id="connect" class="section reveal">
+          <h3 class="section-heading" data-sql="SELECT url FROM links" data-rows={CONNECT.length + 1}>Connect</h3>
+          <div class="connect-grid">
+            {CONNECT.map((c) => <a href={c.href} {...ext} class="connect">{c.label}</a>)}
+            <a href={`mailto:${PROFILE.email}`} class="connect">E-mail</a>
+          </div>
+        </section>
+
+        <footer class="footer reveal">© {new Date().getFullYear()} {PROFILE.name}</footer>
+      </div>
+    </main>
+
+    <div class="wordmark-wrap" aria-hidden="true">
+      <canvas class="wordmark" id="wordmark" />
+    </div>
+
+    <script src="../scripts/effects.js"></script>
+  </div>
+</Base>

@@ -1,0 +1,55 @@
+---
+import '@fontsource/new-rocker';
+import '../styles/globals.css';
+import { SITE, PROFILE } from '../lib/site';
+import aeonik from '../fonts/Aeonik-Regular.woff2?url';
+
+const {
+  title = `${PROFILE.name} | ${PROFILE.role}`,
+  description = PROFILE.description,
+  image = '/og.png',
+  imageAlt = `${PROFILE.name}, ${PROFILE.role}`,
+  article,
+  noindex = false,
+} = Astro.props;
+const ogTitle = article?.title ?? title;
+const imageUrl = new URL(image, SITE).href;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={aeonik} as="font" type="font/woff2" crossorigin />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#000000" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="alternate" type="application/rss+xml" href={`${SITE}/posts/feed.xml`} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={description} />
+    {!article && <meta property="og:site_name" content={PROFILE.name} />}
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    {article && <meta property="article:published_time" content={new Date(article.date).toISOString()} />}
+    {article?.tags.map((t) => <meta property="article:tag" content={t} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content={`@${PROFILE.x}`} />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <meta name="twitter:image:type" content="image/png" />
+    <meta name="twitter:image:width" content="1200" />
+    <meta name="twitter:image:height" content="630" />
+    <link rel="icon" href="/icon.svg" sizes="any" type="image/svg+xml" />
+  </head>
+  <body>
+    <slot />
+    <script src="../scripts/utm.js"></script>
+  </body>
+</html>
