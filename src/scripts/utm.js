@@ -12,3 +12,12 @@ const tag = (e) => {
 };
 document.addEventListener('pointerdown', tag, true);
 document.addEventListener('focusin', tag, true);
+
+document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('a[href]');
+  if (!a || a.dataset.copy) return;
+  const url = new URL(a.href);
+  if (url.protocol !== 'mailto:' && (!url.protocol.startsWith('http') || url.host === location.host)) return;
+  url.search = '';
+  window.umami?.track('outbound-click', { url: url.href });
+});

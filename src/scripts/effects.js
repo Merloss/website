@@ -31,6 +31,7 @@ document.querySelector('[data-copy]').addEventListener('click', async (e) => {
   const el = e.currentTarget;
   e.preventDefault();
   try { await navigator.clipboard.writeText(el.dataset.copy); } catch { location.href = el.href; return; }
+  window.umami?.track('copy-email');
   const c = $('copied');
   c.classList.remove('show'); void c.offsetWidth; c.classList.add('show');
 });
@@ -193,6 +194,7 @@ const type = async (h, text, v) => {
 $('sql').addEventListener('click', (e) => {
   const isOn = $('page').classList.toggle('sql');
   e.currentTarget.setAttribute('aria-pressed', isOn);
+  window.umami?.track('sql-toggle', { on: isOn });
   const v = ++version;
   heads.forEach(async (h, i) => {
     await wait(i * 60);
