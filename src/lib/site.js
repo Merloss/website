@@ -29,3 +29,5 @@ export const CONNECT = [
 ];
 
 export const HOST = new URL(SITE).host;
+
+export const UMAMI_HOST = 'https://u.kerim.im';

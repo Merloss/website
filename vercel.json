@@ -1,6 +1,5 @@
 {
   "rewrites": [
-    { "source": "/k.js", "destination": "https://u.kerim.im/k.js" },
-    { "source": "/api/k", "destination": "https://u.kerim.im/api/k" }
+    { "source": "/k.js", "destination": "https://u.kerim.im/k.js" }
   ]
 }

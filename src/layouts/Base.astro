@@ -1,7 +1,7 @@
 ---
 import '@fontsource/new-rocker';
 import '../styles/globals.css';
-import { SITE, PROFILE } from '../lib/site';
+import { SITE, PROFILE, UMAMI_HOST } from '../lib/site';
 import aeonik from '../fonts/Aeonik-Regular.woff2?url';
 
 const {
@@ -48,7 +48,7 @@ const imageUrl = new URL(image, SITE).href;
     <meta name="twitter:image:width" content="1200" />
     <meta name="twitter:image:height" content="630" />
     <link rel="icon" href="/icon.svg" sizes="any" type="image/svg+xml" />
-    {umami && <script is:inline defer src="/k.js" data-website-id={umami}></script>}
+    {umami && <script is:inline defer src="/k.js" data-website-id={umami} data-host-url={UMAMI_HOST}></script>}
   </head>
   <body>
     <slot />
