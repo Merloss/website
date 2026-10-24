@@ -13,6 +13,7 @@ const {
   noindex = false,
 } = Astro.props;
 const ogTitle = article?.title ?? title;
+const umami = import.meta.env.PUBLIC_UMAMI_ID;
 const imageUrl = new URL(image, SITE).href;
 ---
 
@@ -47,6 +48,7 @@ const imageUrl = new URL(image, SITE).href;
     <meta name="twitter:image:width" content="1200" />
     <meta name="twitter:image:height" content="630" />
     <link rel="icon" href="/icon.svg" sizes="any" type="image/svg+xml" />
+    {umami && <script is:inline defer src="/k.js" data-website-id={umami}></script>}
   </head>
   <body>
     <slot />
