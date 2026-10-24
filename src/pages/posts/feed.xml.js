@@ -21,7 +21,7 @@ export function GET() {
     <link>${SITE}/posts</link>
     <atom:link href="${SITE}/posts/feed.xml" rel="self" type="application/rss+xml" />
     <description>Notes on Go, databases and infrastructure.</description>
-    <language>tr</language>${items}
+    <language>en</language>${items}
   </channel>
 </rss>`, { headers: { 'Content-Type': 'application/rss+xml; charset=utf-8' } });
 }

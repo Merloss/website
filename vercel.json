@@ -1,5 +1,9 @@
 {
   "rewrites": [
     { "source": "/k.js", "destination": "https://u.kerim.im/k.js" }
+  ],
+  "redirects": [
+    { "source": "/posts/mongo-aggregation-temelleri/:path*", "destination": "/posts/mongo-aggregation-basics/:path*", "permanent": true },
+    { "source": "/posts/yeni-bir-baslangic/:path*", "destination": "/posts/a-fresh-start/:path*", "permanent": true }
   ]
 }
