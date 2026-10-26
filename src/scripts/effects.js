@@ -166,18 +166,24 @@ const drawWordmark = (now) => {
   wctx.globalAlpha = 1;
   wmRaf = requestAnimationFrame(drawWordmark);
 };
-document.fonts.load(`80px ${gothic}`, WORD).then(() => {
-  buildWordmark();
-  if (reduced) { drawWordmark(0); cancelAnimationFrame(wmRaf); return; }
-  const wmIO = new IntersectionObserver(([e]) => {
-    cancelAnimationFrame(wmRaf);
-    if (e.isIntersecting) wmRaf = requestAnimationFrame(drawWordmark);
+// the gothic font is only used here, so fetch it as the wordmark nears the viewport
+const fontIO = new IntersectionObserver(([e]) => {
+  if (!e.isIntersecting) return;
+  fontIO.disconnect();
+  document.fonts.load(`80px ${gothic}`, WORD).then(() => {
+    buildWordmark();
+    if (reduced) { drawWordmark(0); cancelAnimationFrame(wmRaf); return; }
+    const wmIO = new IntersectionObserver(([e]) => {
+      cancelAnimationFrame(wmRaf);
+      if (e.isIntersecting) wmRaf = requestAnimationFrame(drawWordmark);
+    });
+    wmIO.observe(wm);
+    wm.addEventListener('mousemove', (e) => { const r = wm.getBoundingClientRect(); wx = e.clientX - r.left; wy = e.clientY - r.top; });
+    wm.addEventListener('mouseleave', () => { wx = wy = -999; });
+    window.addEventListener('resize', buildWordmark);
   });
-  wmIO.observe(wm);
-  wm.addEventListener('mousemove', (e) => { const r = wm.getBoundingClientRect(); wx = e.clientX - r.left; wy = e.clientY - r.top; });
-  wm.addEventListener('mouseleave', () => { wx = wy = -999; });
-  window.addEventListener('resize', buildWordmark);
-});
+}, { rootMargin: '600px' });
+fontIO.observe(wm);
 
 const heads = [...document.querySelectorAll('[data-sql]')];
 heads.forEach((h) => { h.dataset.label = h.textContent; });
