@@ -63,7 +63,7 @@ const posts = getPosts().slice(0, 3);
         <button class="mode-toggle" id="sql" type="button" aria-pressed="false">SQL <span class="switch"><span class="knob" /></span></button>
         <div class="nav-divider" />
         {COMMIT && (
-          <a class="nav-link follow-link commit" href={`${PROFILE.repo}/commit/${COMMIT}`} {...ext} aria-label="Source code on GitHub">
+          <a class="nav-link follow-link commit" href={`${PROFILE.repo}/commit/${COMMIT}`} {...ext} aria-label={`${COMMIT.slice(0, 7)}, source code on GitHub`}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z" /></svg>
             {COMMIT.slice(0, 7)}
           </a>
@@ -101,7 +101,7 @@ const posts = getPosts().slice(0, 3);
         <div class="divider fold-in" style={{ animationDelay: '250ms' }} />
 
         <section id="career" class="section fold-in" style={{ animationDelay: '300ms' }}>
-          <h3 class="section-heading" data-sql="SELECT company, role FROM career" data-rows={CAREER.length}>Career</h3>
+          <h2 class="section-heading" data-sql="SELECT company, role FROM career" data-rows={CAREER.length}>Career</h2>
           <div class="career-list">
             {CAREER.map((c) => {
               const Row = c.url ? 'a' : 'div';
@@ -124,7 +124,7 @@ const posts = getPosts().slice(0, 3);
         <div class="divider reveal" />
 
         <section class="section reveal">
-          <h3 class="section-heading" data-sql="SELECT name FROM stack" data-rows={STACK.length}>Stack</h3>
+          <h2 class="section-heading" data-sql="SELECT name FROM stack" data-rows={STACK.length}>Stack</h2>
           <div class="stack-grid">
             {STACK.map((s) => <span class="stack-item">{s}</span>)}
           </div>
@@ -134,7 +134,7 @@ const posts = getPosts().slice(0, 3);
 
         <section id="github" class="section reveal">
           <div class="section-head">
-            <h3 class="section-heading" data-sql="SELECT * FROM repos" data-rows={gh.repos.length}>GitHub</h3>
+            <h2 class="section-heading" data-sql="SELECT * FROM repos" data-rows={gh.repos.length}>GitHub</h2>
             <a class="section-link underline-link" href={GITHUB} {...ext}>github.com/{PROFILE.github}</a>
           </div>
           {gh.days && <Contributions days={gh.days} total={gh.total} />}
@@ -145,7 +145,7 @@ const posts = getPosts().slice(0, 3);
 
         <section id="posts" class="section reveal">
           <div class="section-head">
-            <h3 class="section-heading" data-sql="SELECT title FROM posts LIMIT 3" data-rows={posts.length}>Latest posts</h3>
+            <h2 class="section-heading" data-sql="SELECT title FROM posts LIMIT 3" data-rows={posts.length}>Latest posts</h2>
             <a class="section-link underline-link" href="/posts">All posts</a>
           </div>
           <div class="post-list">
@@ -161,7 +161,7 @@ const posts = getPosts().slice(0, 3);
         <div class="divider reveal" />
 
         <section id="connect" class="section reveal">
-          <h3 class="section-heading" data-sql="SELECT url FROM links" data-rows={CONNECT.length + 1}>Connect</h3>
+          <h2 class="section-heading" data-sql="SELECT url FROM links" data-rows={CONNECT.length + 1}>Connect</h2>
           <div class="connect-grid">
             {CONNECT.map((c) => <a href={c.href} {...ext} class="connect">{c.label}</a>)}
             <a href={`mailto:${PROFILE.email}`} class="connect">E-mail</a>

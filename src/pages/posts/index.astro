@@ -13,7 +13,7 @@ const posts = getPosts();
   </p>
   <div class="divider fold-in" style="animation-delay: 150ms" />
   <section class="section fold-in" style="animation-delay: 200ms">
-    <h3 class="section-heading">{posts.length} posts</h3>
+    <h2 class="section-heading">{posts.length} posts</h2>
     <div class="post-list">
       {posts.map((p) => (
         <a class="post" href={`/posts/${p.slug}`}>
