@@ -147,7 +147,8 @@ const buildWordmark = () => {
   parts = [];
   for (let y = 1; y < mh / 2; y += ROW) {
     const row = 0.35 + Math.random() * 0.9, gain = 0.35 + Math.random() * 0.65;
-    for (let k = 0; k < mw / 9; k++) {
+    // floor the count so narrow screens are not sparser than desktop
+    for (let k = 0; k < Math.max(mw, 900) / 9; k++) {
       parts.push({ x: Math.random() * mw, y, v: row * (0.05 + Math.random() * 0.12), len: 2 + Math.random() * 10, f: Math.random() * 6.28, g: gain });
     }
   }

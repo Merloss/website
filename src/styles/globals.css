@@ -250,6 +250,7 @@ img { display: block; }
   .nav-links { gap: 14px; }
   .title { font-size: 36px; line-height: 38px; }
   .repo-grid { grid-template-columns: 1fr; }
+  .wordmark-wrap { -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
   .connect-grid, .stack-grid { grid-template-columns: 1fr 1fr; }
   .contrib-grid { column-gap: 1px; row-gap: 1px; }
   .contrib-months { column-gap: 1px; font-size: 9px; }
