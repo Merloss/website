@@ -12,5 +12,6 @@ export default defineConfig({
   site: 'https://kerim.im',
   adapter: vercel({ isr: { expiration: 3600 } }),
   prefetch: { prefetchAll: true },
-  vite: { define: { 'import.meta.env.COMMIT': JSON.stringify(commit) } },
+  // keep scripts external so the CSP needs no 'unsafe-inline' for script-src
+  vite: { define: { 'import.meta.env.COMMIT': JSON.stringify(commit) }, build: { assetsInlineLimit: 0 } },
 });

@@ -22,6 +22,7 @@ const imageUrl = new URL(image, SITE).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preload" href={aeonik} as="font" type="font/woff2" crossorigin />
+    {umami && <link rel="preconnect" href={UMAMI_HOST} />}
     {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#000000" />
     <title>{title}</title>

@@ -7,5 +7,17 @@
     { "source": "/posts/mongo-aggregation-temelleri/:path+", "destination": "/posts/mongo-aggregation-basics/:path+", "permanent": true },
     { "source": "/posts/yeni-bir-baslangic", "destination": "/posts/a-fresh-start", "permanent": true },
     { "source": "/posts/yeni-bir-baslangic/:path+", "destination": "/posts/a-fresh-start/:path+", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://u.kerim.im https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Cross-Origin-Resource-Policy", "value": "same-origin" }
+      ]
+    }
   ]
 }
