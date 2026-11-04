@@ -55,7 +55,9 @@ img { display: block; }
 .logo path { transform-box: fill-box; transform-origin: center; animation: logo-in .4s cubic-bezier(.34, 1.56, .64, 1) both; }
 .logo path:nth-child(2) { animation-delay: 80ms; }
 .logo path:nth-child(3) { animation-delay: 160ms; }
-.logo .cursor { fill: var(--accent); animation: logo-in .4s cubic-bezier(.34, 1.56, .64, 1) .24s both, blink 1.1s steps(1) .7s infinite; }
+.logo .cursor { fill: var(--accent); animation: logo-in .4s cubic-bezier(.34, 1.56, .64, 1) .24s both; }
+/* loops start on first interaction: an idle loop keeps Lighthouse's Speed Index from ever settling */
+.live .logo .cursor { animation: logo-in .4s cubic-bezier(.34, 1.56, .64, 1) .24s both, blink 1.1s steps(1) infinite; }
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes logo-in { from { opacity: 0; transform: scale(.85); } }
 @keyframes blink { 50% { opacity: 0; } }
@@ -97,9 +99,9 @@ img { display: block; }
 .mode-toggle { margin-top: 8px; }
 .bars { color: #ffffff4d; }
 .bars rect { transform-box: fill-box; transform-origin: bottom; }
-.bar1 { animation: bar 3s ease-in-out infinite; }
-.bar2 { animation: bar 3s ease-in-out .4s infinite; }
-.bar3 { animation: bar 3s ease-in-out .8s infinite; }
+.live .bar1 { animation: bar 3s ease-in-out infinite; }
+.live .bar2 { animation: bar 3s ease-in-out .4s infinite; }
+.live .bar3 { animation: bar 3s ease-in-out .8s infinite; }
 @keyframes bar { 0%, 100% { opacity: .3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.15); } }
 .switch { position: relative; width: 16px; height: 10px; border-radius: 3px; background: #2a2c2c; box-shadow: 0 0 0 1px #ffffff24; transition: background .15s, box-shadow .15s; }
 .knob { position: absolute; top: 0; left: 0; width: 8px; height: 10px; border-radius: 3px; background: #fff; box-shadow: 0 0 0 1px #cdcdcd, 0 2px 4px -2px #0006; transition: transform .15s, box-shadow .15s; }

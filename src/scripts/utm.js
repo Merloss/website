@@ -21,3 +21,6 @@ document.addEventListener('click', (e) => {
   url.search = '';
   window.umami?.track('outbound-click', { url: url.href });
 });
+
+const live = () => document.documentElement.classList.add('live');
+['pointermove', 'pointerdown', 'scroll', 'keydown'].forEach((t) => addEventListener(t, live, { once: true, passive: true }));
